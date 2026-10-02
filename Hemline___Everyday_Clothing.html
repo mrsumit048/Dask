@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hemline – Everyday Clothing</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#eceef4;--surface:#fff;--ink:#1f2a44;--muted:#5d6784;--accent:#f2b632;--accent-ink:#1f2a44;--line:#d3d8e6}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121828;--surface:#1b2438;--ink:#eceef4;--muted:#9aa5c4;--line:#2c3856}}
+:root[data-theme="dark"]{--bg:#121828;--surface:#1b2438;--ink:#eceef4;--muted:#9aa5c4;--line:#2c3856}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Bricolage Grotesque",system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.5}
+header{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5;border-bottom:1px solid var(--line)}
+#bgimg{position:fixed;inset:0;z-index:-1;display:none;background-size:cover;background-position:center;background-repeat:no-repeat}
+#bgimg::after{content:"";position:absolute;inset:0;background:var(--bg);opacity:var(--bgo,.55)}
+html.hasbg #bgimg{display:block}
+html.hasbg header{background:color-mix(in srgb,var(--bg) 80%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.logo{display:flex;align-items:center;gap:8px;font-weight:800;font-size:1.5rem;letter-spacing:-.03em}
+.logo img{height:34px;width:auto;max-width:140px;object-fit:contain;border-radius:6px}
+.mark{width:34px;height:34px;border-radius:8px;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-size:1.2rem}
+button{font:inherit;cursor:pointer}
+button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible,a:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.cartbtn{background:var(--ink);color:var(--bg);border:0;border-radius:999px;padding:8px 16px;font-weight:600}
+.hero{padding:44px 20px 24px;max-width:960px;margin:0 auto}
+.hero h1{font-size:clamp(2.6rem,10vw,5.5rem);line-height:.95;letter-spacing:-.04em;font-weight:800;margin:0 0 14px}
+.hero p{max-width:46ch;color:var(--muted);margin:0}
+.filters{display:flex;gap:8px;padding:12px 20px;max-width:960px;margin:0 auto;overflow-x:auto}
+.chip{border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:999px;padding:6px 14px;white-space:nowrap}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;padding:12px 20px 48px;max-width:960px;margin:0 auto}
+.card{background:var(--surface);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+.tile{aspect-ratio:1/1;display:flex;align-items:flex-end;padding:12px;font-size:2rem;font-weight:800;letter-spacing:-.03em;color:#fff;mix-blend-mode:normal}
+.info{padding:12px;display:flex;flex-direction:column;gap:8px;flex:1}
+.info h3{margin:0;font-size:1rem;font-weight:600}
+.price{color:var(--muted)}
+.row{display:flex;flex-direction:column;gap:8px;margin-top:auto}
+.btns{display:flex;gap:8px}
+.buy{flex:1;background:var(--ink);color:var(--bg);border:0;border-radius:6px;padding:8px 6px;font-weight:600;font-size:.9rem}
+select{flex:1;min-width:0;padding:8px;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit}
+.add{flex:1;background:var(--accent);color:var(--accent-ink);border:0;border-radius:6px;padding:8px 6px;font-weight:600;font-size:.9rem}
+aside{position:fixed;top:0;right:0;bottom:0;width:min(400px,100%);background:var(--surface);transform:translateX(100%);transition:transform .25s;z-index:10;display:flex;flex-direction:column;padding:20px;padding-top:calc(20px + env(safe-area-inset-top,0px));padding-bottom:calc(20px + env(safe-area-inset-bottom,0px));box-shadow:-8px 0 30px rgba(0,0,0,.2)}
+aside.open{transform:none}
+@media (prefers-reduced-motion:reduce){aside{transition:none}}
+.savebar{position:sticky;top:0;z-index:2;background:var(--surface);padding:8px 0;display:flex;flex-wrap:wrap;gap:8px;align-items:center;border-bottom:1px solid var(--line)}
+.savebar small{flex-basis:100%}
+.sh{display:flex;justify-content:space-between;align-items:center}
+.sh h2{margin:0}
+.x{background:none;border:0;color:var(--ink);font-size:1.6rem}
+.items{flex:1;overflow:auto;margin:12px 0}
+.item{display:flex;justify-content:space-between;gap:8px;padding:10px 0;border-bottom:1px solid var(--line)}
+.item small{color:var(--muted)}
+.qty{display:flex;align-items:center;gap:8px}
+.qty button{width:28px;height:28px;border-radius:50%;border:1px solid var(--line);background:none;color:var(--ink)}
+.total{display:flex;justify-content:space-between;font-weight:800;font-size:1.2rem;margin-bottom:12px}
+.primary{width:100%;background:var(--ink);color:var(--bg);border:0;border-radius:8px;padding:12px;font-weight:600}
+form{display:flex;flex-direction:column;gap:10px}
+input,textarea{padding:10px;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit}
+.hbtns{display:flex;gap:8px;align-items:center}
+#ebody{flex:1;overflow:auto;display:flex;flex-direction:column;gap:10px;margin:12px 0}
+#ebody h3{margin:8px 0 0}
+label{display:flex;flex-direction:column;gap:4px;font-size:.9rem;color:var(--muted)}
+input[type=color]{padding:2px;height:36px;width:44px}
+.pe{display:flex;flex-wrap:wrap;gap:6px;padding:10px 0;border-bottom:1px solid var(--line)}
+.pph{flex:1 1 100%;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.pthumb{width:44px;height:44px;object-fit:cover;border-radius:6px;border:1px solid var(--line)}
+.pe input[data-k=name]{flex:1 1 100%}
+.pe input[data-k=cat]{flex:1;min-width:0}
+.pe input[data-k=price]{width:80px}
+a.primary{display:block;text-align:center;text-decoration:none;margin-top:8px}
+.ord{padding:10px 0;border-bottom:1px solid var(--line);font-size:.9rem}
+.vh{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;pointer-events:none}
+.logoup{display:flex;flex-direction:column;gap:6px;font-size:.9rem;color:var(--muted)}
+.logoup .add{flex:none;padding:12px}
+.empty{color:var(--muted);padding:20px 0}
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:9;display:none}
+.scrim.on{display:block}
+</style>
+</head>
+<body>
+<div id="bgimg" aria-hidden="true"></div>
+<header>
+  <div class="logo" id="logo">Hemline</div>
+  <div class="hbtns"><button class="chip" id="edit">Edit store</button><button class="cartbtn" id="open" aria-label="Open cart">Cart (<span id="count">0</span>)</button></div>
+</header>
+<section class="hero">
+  <h1 id="h1">Clothes you'll wear on repeat.</h1>
+  <p id="sub">Soft basics in five colors, sized XS to XL. Free returns within 30 days.</p>
+</section>
+<div class="filters" id="filters" role="group" aria-label="Filter by category"></div>
+<main class="grid" id="grid"></main>
+
+<div class="scrim" id="scrim"></div>
+<aside id="cart" aria-label="Shopping cart" aria-hidden="true">
+  <div class="sh"><h2 id="ctitle">Your cart</h2><button class="x" id="close" aria-label="Close cart">×</button></div>
+  <div class="items" id="items"></div>
+  <div id="foot"></div>
+</aside>
+<aside id="editor" aria-label="Edit store" aria-hidden="true">
+  <div class="sh"><h2>Edit store</h2><button class="x" id="eclose" aria-label="Close editor">×</button></div>
+  <div id="ebody"></div>
+</aside>
+
+<script>
+const DEFAULT_PRODUCTS=[
+ {id:1,name:"Heavyweight tee",cat:"Tops",price:28,color:"#3b5bdb"},
+ {id:2,name:"Boxy hoodie",cat:"Tops",price:64,color:"#6741d9"},
+ {id:3,name:"Linen shirt",cat:"Tops",price:52,color:"#0b7285"},
+ {id:4,name:"Straight jeans",cat:"Bottoms",price:78,color:"#364fc7"},
+ {id:5,name:"Pleated trousers",cat:"Bottoms",price:70,color:"#495057"},
+ {id:6,name:"Cargo shorts",cat:"Bottoms",price:48,color:"#2b8a3e"},
+ {id:7,name:"Rain shell",cat:"Outerwear",price:110,color:"#c2255c"},
+ {id:8,name:"Wool overcoat",cat:"Outerwear",price:190,color:"#5f3dc4"},
+ {id:9,name:"Rib beanie",cat:"Accessories",price:22,color:"#e8590c"},
+ {id:10,name:"Canvas tote",cat:"Accessories",price:26,color:"#1971c2"}
+];
+const SIZES=["XS","S","M","L","XL"];
+const DEF={brand:"Hemline",headline:"Clothes you'll wear on repeat.",sub:"Soft basics in five colors, sized XS to XL. Free returns within 30 days.",accent:"#f2b632",logo:"",cur:"$",wa:"",bg:"",bgo:55};
+let S={...DEF},PRODUCTS=JSON.parse(JSON.stringify(DEFAULT_PRODUCTS));
+try{const d=JSON.parse(localStorage.getItem("hemline-store")||"null");if(d){S={...DEF,...d.S};if(Array.isArray(d.P))PRODUCTS=d.P}}catch(e){}
+let dirty=false;
+function saveStore(){try{const j=JSON.stringify({S,P:PRODUCTS});localStorage.setItem("hemline-store",j);return localStorage.getItem("hemline-store")===j}catch(e){return false}}
+function markDirty(){dirty=true;const b=$("savebtn");if(b){b.textContent="Save changes";b.disabled=false}const m=$("savemsg");if(m)m.textContent="Unsaved changes"}
+window.addEventListener("beforeunload",e=>{if(dirty){e.preventDefault();e.returnValue=""}});
+let cart=[],cat="All";
+try{cart=JSON.parse(localStorage.getItem("hemline-cart")||"[]")}catch(e){cart=[]}
+const $=id=>document.getElementById(id);
+const money=n=>(S.cur||"")+n.toFixed(2);
+function save(){try{localStorage.setItem("hemline-cart",JSON.stringify(cart))}catch(e){}}
+
+function renderFilters(){
+  const cats=["All",...new Set(PRODUCTS.map(p=>p.cat))];
+  if(!cats.includes(cat))cat="All";
+  $("filters").innerHTML=cats.map(c=>`<button class="chip" aria-pressed="${c===cat}" data-c="${c}">${c}</button>`).join("");
+  $("filters").querySelectorAll("button").forEach(b=>b.onclick=()=>{cat=b.dataset.c;renderFilters();renderGrid()});
+}
+function renderGrid(){
+  $("grid").innerHTML=PRODUCTS.filter(p=>cat==="All"||p.cat===cat).map(p=>`
+  <article class="card">
+    <div class="tile" style="background:${p.img?`#ddd url(${esc(p.img)}) center/cover no-repeat`:esc(p.color)}"${p.img?` role="img" aria-label="${esc(p.name)}"`:""}>${p.img?"":esc(p.cat)}</div>
+    <div class="info"><h3>${p.name}</h3><span class="price">${money(p.price)}</span>
+      <div class="row"><div><select aria-label="Size for ${p.name}" id="s${p.id}">${SIZES.map(s=>`<option ${s==="M"?"selected":""}>${s}</option>`).join("")}</select>
+      </div><div class="btns"><button class="add" data-id="${p.id}">Add to cart</button><button class="buy" data-id="${p.id}">Buy now</button></div></div></div>
+  </article>`).join("");
+  $("grid").querySelectorAll(".add").forEach(b=>b.onclick=()=>add(+b.dataset.id,$("s"+b.dataset.id).value));
+  $("grid").querySelectorAll(".buy").forEach(b=>b.onclick=()=>add(+b.dataset.id,$("s"+b.dataset.id).value,true));
+}
+function add(id,size,buy){
+  const l=cart.find(i=>i.id===id&&i.size===size);
+  l?l.q++:cart.push({id,size,q:1});
+  save();renderCart();openCart();
+  if(buy)checkout();
+}
+function change(i,d){cart[i].q+=d;if(cart[i].q<1)cart.splice(i,1);save();renderCart()}
+function totals(){return cart.reduce((s,l)=>s+PRODUCTS.find(p=>p.id===l.id).price*l.q,0)}
+function renderCart(){
+  cart=cart.filter(l=>PRODUCTS.some(p=>p.id===l.id));
+  $("count").textContent=cart.reduce((s,l)=>s+l.q,0);
+  $("ctitle").textContent="Your cart";
+  if(!cart.length){$("items").innerHTML='<p class="empty">Your cart is empty. Pick a size and tap Add.</p>';$("foot").innerHTML="";return}
+  $("items").innerHTML=cart.map((l,i)=>{const p=PRODUCTS.find(x=>x.id===l.id);return `
+  <div class="item"><div>${p.name}<br><small>Size ${l.size} · ${money(p.price)}</small></div>
+  <div class="qty"><button data-i="${i}" data-d="-1" aria-label="Remove one">−</button>${l.q}<button data-i="${i}" data-d="1" aria-label="Add one">+</button></div></div>`}).join("");
+  $("items").querySelectorAll(".qty button").forEach(b=>b.onclick=()=>change(+b.dataset.i,+b.dataset.d));
+  $("foot").innerHTML=`<div class="total"><span>Total</span><span>${money(totals())}</span></div><button class="primary" id="go">Checkout</button>`;
+  $("go").onclick=checkout;
+}
+function checkout(){
+  let c={};try{c=JSON.parse(localStorage.getItem("hemline-customer")||"{}")}catch(e){}
+  $("ctitle").textContent="Checkout";
+  $("items").innerHTML=`<form id="f">
+   <label>Customer name<input name="name" required autocomplete="name" value="${esc(c.name||"")}"></label>
+   <label>Mobile number<input name="mobile" required type="tel" inputmode="numeric" maxlength="10" pattern="[0-9]{10}" title="Enter a 10-digit mobile number" autocomplete="tel-national" placeholder="10-digit number" value="${esc(c.mobile||"")}"></label>
+   <label>Full delivery address<textarea name="address" required rows="3" autocomplete="street-address" placeholder="House no., street, area, landmark">${esc(c.address||"")}</textarea></label>
+   <label>PIN code<input name="pin" required inputmode="numeric" maxlength="6" pattern="[0-9]{6}" title="Enter a 6-digit PIN code" autocomplete="postal-code" placeholder="6-digit PIN" value="${esc(c.pin||"")}"></label>
+   <label>City / State<input name="city" required autocomplete="address-level2" placeholder="e.g. Jaipur, Rajasthan" value="${esc(c.city||"")}"></label></form>`;
+  $("f").onsubmit=e=>e.preventDefault();
+  $("foot").innerHTML=`<div class="total"><span>Total</span><span>${money(totals())}</span></div><button class="primary" id="pay">Place order</button>`;
+  $("pay").onclick=()=>{const f=$("f");if(!f.reportValidity())return;
+    const d=Object.fromEntries(new FormData(f));
+    const ref="HL-"+Math.floor(100000+Math.random()*900000);
+    const lines=cart.map(l=>{const p=PRODUCTS.find(x=>x.id===l.id);return `${p.name} (${l.size}) x${l.q} = ${money(p.price*l.q)}`});
+    const total=totals();
+    const order={ref,date:new Date().toISOString(),lines,total:money(total),...d};
+    try{localStorage.setItem("hemline-customer",JSON.stringify(d));
+      const o=JSON.parse(localStorage.getItem("hemline-orders")||"[]");o.unshift(order);
+      localStorage.setItem("hemline-orders",JSON.stringify(o.slice(0,50)))}catch(e){}
+    const msg=`New order ${ref}\n${lines.join("\n")}\nTotal: ${money(total)}\n\nName: ${d.name}\nMobile: ${d.mobile}\nAddress: ${d.address}\nPIN: ${d.pin}\nCity/State: ${d.city}`;
+    const wa=(S.wa||"").replace(/\D/g,"");
+    cart=[];save();$("count").textContent="0";$("ctitle").textContent="Order placed";
+    $("items").innerHTML=`<p>Thanks, ${esc(d.name)}! Your order <strong>${ref}</strong> is saved.</p>`+(wa?`<p>Tap below to send your order details to the store.</p><a class="primary" target="_blank" rel="noopener" href="https://wa.me/${wa}?text=${encodeURIComponent(msg)}">Send order on WhatsApp</a>`:`<p>The store hasn't added a WhatsApp number yet, so this order is saved only on this device.</p>`);
+    $("foot").innerHTML=`<button class="primary" id="done">Keep shopping</button>`;$("done").onclick=()=>{closeCart();renderCart()};};
+}
+function openCart(){$("cart").classList.add("open");$("cart").setAttribute("aria-hidden","false");$("scrim").classList.add("on")}
+function closeCart(){$("editor").classList.remove("open");$("editor").setAttribute("aria-hidden","true");$("cart").classList.remove("open");$("cart").setAttribute("aria-hidden","true");$("scrim").classList.remove("on")}
+$("open").onclick=()=>{renderCart();openCart()};
+$("close").onclick=$("scrim").onclick=closeCart;
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeCart()});
+const esc=t=>String(t).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
+function applySettings(){const bi=$("bgimg");bi.style.backgroundImage=S.bg?`url("${S.bg}")`:"none";document.documentElement.classList.toggle("hasbg",!!S.bg);document.documentElement.style.setProperty("--bgo",(S.bgo==null?55:S.bgo)/100);$("logo").innerHTML=(S.logo?`<img src="${esc(S.logo)}" alt="">`:`<span class="mark" aria-hidden="true">${esc((S.brand||"H").trim().charAt(0).toUpperCase())}</span>`)+`<span>${esc(S.brand)}</span>`;document.title=S.brand+" – Everyday Clothing";$("h1").textContent=S.headline;$("sub").textContent=S.sub;document.documentElement.style.setProperty("--accent",S.accent)}
+function refresh(){markDirty();applySettings();renderFilters();renderGrid();renderCart()}
+function renderEditor(){
+  let orders=[];try{orders=JSON.parse(localStorage.getItem("hemline-orders")||"[]")}catch(e){}
+  $("ebody").innerHTML=`
+  <div class="savebar"><button class="primary" id="savebtn">Save changes</button><button class="chip" id="bkp">Backup</button><button class="chip" id="rst">Restore</button><input type="file" id="rfile" accept=".json,application/json" class="vh" aria-label="Restore backup file"><small id="savemsg" role="status">${dirty?"Unsaved changes":"All changes saved"}</small></div>
+  <div class="logoup"><span>Logo image</span><button type="button" class="add" id="pick">Choose photo from gallery or files</button><input type="file" id="e-logo" accept="image/*" class="vh" aria-label="Logo image file"><small id="logomsg" role="status"></small></div>
+  ${S.logo?'<button class="chip" id="rmlogo">Remove logo</button>':''}
+  <h3>Theme</h3>
+  <div class="logoup"><span>Website background photo</span><button type="button" class="add" id="pickbg">${S.bg?"Change background photo":"Choose background photo"}</button><input type="file" id="e-bg" accept="image/*" class="vh" aria-label="Background photo file"><small id="bgmsg" role="status"></small></div>
+  ${S.bg?`<label>Photo fade (higher = easier to read text)<input type="range" id="e-bgo" min="0" max="90" step="5" value="${S.bgo==null?55:S.bgo}"></label><button class="chip" id="rmbg">Remove background photo</button>`:""}
+  <label>Store name<input id="e-brand" value="${esc(S.brand)}"></label>
+  <label>Headline<input id="e-head" value="${esc(S.headline)}"></label>
+  <label>Subtext<input id="e-sub" value="${esc(S.sub)}"></label>
+  <label>Button color<input type="color" id="e-acc" value="${S.accent}"></label>
+  <label>Currency symbol<input id="e-cur" maxlength="3" value="${esc(S.cur)}"></label>
+  <label>WhatsApp number for orders (with country code, e.g. 919876543210)<input id="e-wa" type="tel" inputmode="numeric" value="${esc(S.wa)}"></label>
+  <h3>Products</h3>
+  ${PRODUCTS.map((p,i)=>`<div class="pe"><input data-i="${i}" data-k="name" value="${esc(p.name)}" aria-label="Product name"><input data-i="${i}" data-k="cat" value="${esc(p.cat)}" aria-label="Category"><input data-i="${i}" data-k="price" type="number" min="0" step="0.01" value="${p.price}" aria-label="Price"><input data-i="${i}" data-k="color" type="color" value="${p.color}" aria-label="Tile color (used when no photo)" title="Tile color (used when no photo)"><button class="x" data-del="${i}" aria-label="Delete product">🗑</button><div class="pph">${p.img?`<img src="${esc(p.img)}" alt="" class="pthumb">`:""}<button type="button" class="chip" data-pick="${i}">${p.img?"Change photo":"Upload photo"}</button>${p.img?`<button type="button" class="chip" data-rmimg="${i}">Remove photo</button>`:""}<input type="file" accept="image/*" class="vh" data-file="${i}" aria-label="Product photo file"></div></div>`).join("")}
+  <button class="primary" id="addp">Add product</button>
+  <h3>Saved orders</h3>
+  ${orders.length?orders.map(o=>`<div class="ord"><strong>${esc(o.ref)}</strong> · ${esc(o.total)}<br>${esc(o.name)}, ${esc(o.mobile)}<br><small>${esc(o.address)}, ${esc(o.city)} ${esc(o.pin)}</small><br><small>${o.lines.map(esc).join("; ")}</small></div>`).join(""):'<p class="empty">No orders saved on this device yet.</p>'}`;
+  const bind=(id,k)=>$(id).oninput=e=>{S[k]=e.target.value;refresh()};
+  bind("e-brand","brand");bind("e-head","headline");bind("e-sub","sub");bind("e-acc","accent");bind("e-cur","cur");bind("e-wa","wa");
+  $("ebody").querySelectorAll(".pe input[data-k]").forEach(inp=>inp.oninput=()=>{
+    const p=PRODUCTS[+inp.dataset.i],k=inp.dataset.k;
+    p[k]=k==="price"?(parseFloat(inp.value)||0):inp.value;refresh()});
+  $("ebody").querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{PRODUCTS.splice(+b.dataset.del,1);refresh();renderEditor()});
+  $("ebody").querySelectorAll("[data-pick]").forEach(b=>b.onclick=()=>$("ebody").querySelector(`[data-file="${b.dataset.pick}"]`).click());
+  $("ebody").querySelectorAll("[data-rmimg]").forEach(b=>b.onclick=()=>{delete PRODUCTS[+b.dataset.rmimg].img;refresh();renderEditor()});
+  $("ebody").querySelectorAll("[data-file]").forEach(inp=>inp.onchange=e=>{const f=e.target.files[0];if(!f)return;const p=PRODUCTS[+inp.dataset.file];
+    const bad=()=>{$("savemsg").textContent="Couldn't read this image. Try a JPG or PNG photo."};
+    const fr=new FileReader();fr.onerror=bad;
+    fr.onload=()=>{const im=new Image();im.onerror=bad;im.onload=()=>{
+      const m=Math.min(1,600/Math.max(im.width,im.height)),w=Math.round(im.width*m),h=Math.round(im.height*m),c=document.createElement("canvas");
+      c.width=w;c.height=h;c.getContext("2d").drawImage(im,0,0,w,h);
+      p.img=c.toDataURL("image/jpeg",0.8);refresh();renderEditor()};im.src=fr.result};
+    fr.readAsDataURL(f)});
+  $("addp").onclick=()=>{PRODUCTS.push({id:Date.now(),name:"New product",cat:"Tops",price:30,color:"#3b5bdb"});refresh();renderEditor()};
+  $("pickbg").onclick=()=>$("e-bg").click();
+  $("e-bg").onchange=e=>{const f=e.target.files[0];if(!f)return;
+    const bad=()=>{$("bgmsg").textContent="Couldn't read this image. Try a JPG or PNG photo."};
+    const fr=new FileReader();fr.onerror=bad;
+    fr.onload=()=>{const im=new Image();im.onerror=bad;im.onload=()=>{
+      const m=Math.min(1,1600/Math.max(im.width,im.height)),w=Math.round(im.width*m),h=Math.round(im.height*m),c=document.createElement("canvas");
+      c.width=w;c.height=h;c.getContext("2d").drawImage(im,0,0,w,h);
+      S.bg=c.toDataURL("image/jpeg",0.75);refresh();renderEditor()};im.src=fr.result};
+    fr.readAsDataURL(f)};
+  if($("e-bgo"))$("e-bgo").oninput=e=>{S.bgo=+e.target.value;refresh()};
+  if($("rmbg"))$("rmbg").onclick=()=>{S.bg="";refresh();renderEditor()};
+  $("pick").onclick=()=>$("e-logo").click();
+  $("e-logo").onchange=e=>{const f=e.target.files[0];if(!f)return;
+    const msg=t=>{$("logomsg").textContent=t},bad=()=>msg("Couldn't read this image. Try a JPG or PNG photo.");
+    const fr=new FileReader();fr.onerror=bad;
+    fr.onload=()=>{const im=new Image();im.onerror=bad;im.onload=()=>{
+      const h=Math.min(96,im.height),w=Math.round(im.width*h/im.height),c=document.createElement("canvas");
+      c.width=w;c.height=h;c.getContext("2d").drawImage(im,0,0,w,h);
+      S.logo=c.toDataURL("image/png");refresh();renderEditor()};im.src=fr.result};
+    fr.readAsDataURL(f)};
+  if($("rmlogo"))$("rmlogo").onclick=()=>{S.logo="";refresh();renderEditor()};
+  $("savebtn").onclick=()=>{const ok=saveStore();dirty=!ok;$("savemsg").textContent=ok?"Saved ✓ — will stay after reload":"Couldn't save in this browser. Use Backup to keep a copy.";if(ok)$("savebtn").textContent="Saved ✓"};
+  $("bkp").onclick=()=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify({S,P:PRODUCTS})],{type:"application/json"}));a.download="hemline-backup.json";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
+  $("rst").onclick=()=>$("rfile").click();
+  $("rfile").onchange=e=>{const f=e.target.files[0];if(!f)return;const fr=new FileReader();fr.onload=()=>{try{const d=JSON.parse(fr.result);S={...DEF,...d.S};if(Array.isArray(d.P))PRODUCTS=d.P;refresh();renderEditor();$("savemsg").textContent="Backup loaded — tap Save changes"}catch(x){$("savemsg").textContent="Invalid backup file"}};fr.readAsText(f)};
+}
+$("edit").onclick=()=>{renderEditor();$("editor").classList.add("open");$("editor").setAttribute("aria-hidden","false");$("scrim").classList.add("on")};
+$("eclose").onclick=closeCart;
+applySettings();renderFilters();renderGrid();renderCart();
+</script>
+</body>
+</html>
