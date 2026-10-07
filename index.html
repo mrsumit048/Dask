@@ -1,15 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>DASK | Everyday Clothing</title>
-
-<meta name="description" content="DASK Everyday Clothing - Premium everyday clothing and fashion.">
-<meta name="keywords" content="Dask Everyday Clothing, Dask clothing, Dask fashion">
-  <link rel="icon" type="image/png" href="favicon.png">
-  <meta name="google-site-verification" content="qHXKxx-9Tx4x4KVWdX_fUVfjv_ohYeOtRTtinC4UI7Q" />
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dask Everyday Clothing – Soft Basics, Tees, Hoodies &amp; Jeans</title>
+<meta name="description" content="Dask Everyday Clothing: shop soft everyday basics – tees, hoodies, shirts, jeans, trousers and outerwear in sizes XS to XL. Free returns within 30 days.">
+<meta name="application-name" content="Dask Everyday Clothing">
+<meta name="apple-mobile-web-app-title" content="Dask Everyday Clothing">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Dask Everyday Clothing">
+<meta property="og:title" content="Dask Everyday Clothing">
+<meta property="og:description" content="Soft everyday basics in sizes XS to XL. Free returns within 30 days.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Dask Everyday Clothing">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","name":"Dask Everyday Clothing","alternateName":["Dask","Dask Clothing"]},{"@type":"Organization","name":"Dask Everyday Clothing","alternateName":"Dask"},{"@type":"ClothingStore","name":"Dask Everyday Clothing"}]}</script>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js" defer></script>
 <style>
 :root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
 --bg:#eceef4;--surface:#fff;--ink:#1f2a44;--muted:#5d6784;--accent:#f2b632;--accent-ink:#1f2a44;--line:#d3d8e6}
@@ -23,7 +30,8 @@ header{display:flex;justify-content:space-between;align-items:center;padding:16p
 #bgimg::after{content:"";position:absolute;inset:0;background:var(--bg);opacity:var(--bgo,.55)}
 html.hasbg #bgimg{display:block}
 html.hasbg header{background:color-mix(in srgb,var(--bg) 80%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
-.logo{display:flex;align-items:center;gap:8px;font-weight:800;font-size:1.5rem;letter-spacing:-.03em}
+.logo{display:flex;align-items:center;gap:8px;font-weight:800;font-size:clamp(1rem,4.6vw,1.5rem);line-height:1.1;letter-spacing:-.03em;min-width:0}
+.logo .mark{flex:none}
 .logo img{height:34px;width:auto;max-width:140px;object-fit:contain;border-radius:6px}
 .mark{width:34px;height:34px;border-radius:8px;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-size:1.2rem}
 button{font:inherit;cursor:pointer}
@@ -80,6 +88,18 @@ a.primary{display:block;text-align:center;text-decoration:none;margin-top:8px}
 .logoup{display:flex;flex-direction:column;gap:6px;font-size:.9rem;color:var(--muted)}
 .logoup .add{flex:none;padding:12px}
 .empty{color:var(--muted);padding:20px 0}
+.amenu{display:flex;flex-direction:column;gap:8px}
+.aopt{display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);font-weight:600}
+.aopt .num{flex:none;width:30px;height:30px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-weight:800}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.stat{display:flex;flex-direction:column;gap:2px;padding:12px;border:1px solid var(--line);border-radius:8px}
+.stat strong{font-size:1.3rem}
+.stat small{color:var(--muted)}
+.payf{border:1px solid var(--line);border-radius:8px;padding:8px 12px;margin:0;display:flex;flex-direction:column;gap:8px}
+.payf legend{color:var(--muted);font-size:.9rem;padding:0 4px}
+.payf label.radio{flex-direction:row;align-items:center;gap:10px;color:var(--ink);font-size:1rem}
+input[type=radio]{padding:0;width:20px;height:20px;accent-color:var(--accent-ink)}
+.upibox{border:1px solid var(--line);border-radius:8px;padding:12px;margin-top:10px}
 .scrim{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:9;display:none}
 .scrim.on{display:block}
 </style>
@@ -87,8 +107,8 @@ a.primary{display:block;text-align:center;text-decoration:none;margin-top:8px}
 <body>
 <div id="bgimg" aria-hidden="true"></div>
 <header>
-  <div class="logo" id="logo">Hemline</div>
-  <div class="hbtns"><button class="chip" id="edit">Edit store</button><button class="cartbtn" id="open" aria-label="Open cart">Cart (<span id="count">0</span>)</button></div>
+  <div class="logo" id="logo">Dask Everyday Clothing</div>
+  <div class="hbtns"><button class="chip" id="admin">Admin</button><button class="cartbtn" id="open" aria-label="Open cart">Cart (<span id="count">0</span>)</button></div>
 </header>
 <section class="hero">
   <h1 id="h1">Clothes you'll wear on repeat.</h1>
@@ -97,6 +117,8 @@ a.primary{display:block;text-align:center;text-decoration:none;margin-top:8px}
 <div class="filters" id="filters" role="group" aria-label="Filter by category"></div>
 <main class="grid" id="grid"></main>
 
+<footer style="text-align:center;color:var(--muted);padding:0 20px 32px;font-size:.9rem">© Dask Everyday Clothing</footer>
+
 <div class="scrim" id="scrim"></div>
 <aside id="cart" aria-label="Shopping cart" aria-hidden="true">
   <div class="sh"><h2 id="ctitle">Your cart</h2><button class="x" id="close" aria-label="Close cart">×</button></div>
@@ -104,7 +126,7 @@ a.primary{display:block;text-align:center;text-decoration:none;margin-top:8px}
   <div id="foot"></div>
 </aside>
 <aside id="editor" aria-label="Edit store" aria-hidden="true">
-  <div class="sh"><h2>Edit store</h2><button class="x" id="eclose" aria-label="Close editor">×</button></div>
+  <div class="sh"><h2 id="etitle">Admin</h2><button class="x" id="eclose" aria-label="Close editor">×</button></div>
   <div id="ebody"></div>
 </aside>
 
@@ -122,18 +144,19 @@ const DEFAULT_PRODUCTS=[
  {id:10,name:"Canvas tote",cat:"Accessories",price:26,color:"#1971c2"}
 ];
 const SIZES=["XS","S","M","L","XL"];
-const DEF={brand:"Hemline",headline:"Clothes you'll wear on repeat.",sub:"Soft basics in five colors, sized XS to XL. Free returns within 30 days.",accent:"#f2b632",logo:"",cur:"$",wa:"",bg:"",bgo:55};
+const DEF={brand:"Dask Everyday Clothing",headline:"Clothes you'll wear on repeat.",sub:"Soft basics in five colors, sized XS to XL. Free returns within 30 days.",accent:"#f2b632",logo:"",cur:"$",wa:"",upi:"",upiNo:"",qr:"",qrData:"",bg:"",bgo:55};
 let S={...DEF},PRODUCTS=JSON.parse(JSON.stringify(DEFAULT_PRODUCTS));
-try{const d=JSON.parse(localStorage.getItem("hemline-store")||"null");if(d){S={...DEF,...d.S};if(Array.isArray(d.P))PRODUCTS=d.P}}catch(e){}
+const LG=k=>{try{return localStorage.getItem("dask-"+k)??localStorage.getItem("hemline-"+k)}catch(e){return null}};
+try{const d=JSON.parse(LG("store")||"null");if(d){S={...DEF,...d.S};if(!S.brand||/^hemline$/i.test(S.brand.trim()))S.brand=DEF.brand;if(Array.isArray(d.P))PRODUCTS=d.P}}catch(e){}
 let dirty=false;
-function saveStore(){try{const j=JSON.stringify({S,P:PRODUCTS});localStorage.setItem("hemline-store",j);return localStorage.getItem("hemline-store")===j}catch(e){return false}}
+function saveStore(){try{const j=JSON.stringify({S,P:PRODUCTS});localStorage.setItem("dask-store",j);return localStorage.getItem("dask-store")===j}catch(e){return false}}
 function markDirty(){dirty=true;const b=$("savebtn");if(b){b.textContent="Save changes";b.disabled=false}const m=$("savemsg");if(m)m.textContent="Unsaved changes"}
 window.addEventListener("beforeunload",e=>{if(dirty){e.preventDefault();e.returnValue=""}});
 let cart=[],cat="All";
-try{cart=JSON.parse(localStorage.getItem("hemline-cart")||"[]")}catch(e){cart=[]}
+try{cart=JSON.parse(LG("cart")||"[]")}catch(e){cart=[]}
 const $=id=>document.getElementById(id);
 const money=n=>(S.cur||"")+n.toFixed(2);
-function save(){try{localStorage.setItem("hemline-cart",JSON.stringify(cart))}catch(e){}}
+function save(){try{localStorage.setItem("dask-cart",JSON.stringify(cart))}catch(e){}}
 
 function renderFilters(){
   const cats=["All",...new Set(PRODUCTS.map(p=>p.cat))];
@@ -172,44 +195,126 @@ function renderCart(){
   $("foot").innerHTML=`<div class="total"><span>Total</span><span>${money(totals())}</span></div><button class="primary" id="go">Checkout</button>`;
   $("go").onclick=checkout;
 }
+async function decodeQR(canvas){
+  try{const ctx=canvas.getContext("2d"),id=ctx.getImageData(0,0,canvas.width,canvas.height);
+    if(window.jsQR){const r=jsQR(id.data,id.width,id.height);if(r&&r.data)return r.data}}catch(e){}
+  try{if("BarcodeDetector" in window){const r=await new BarcodeDetector({formats:["qr_code"]}).detect(canvas);if(r[0]&&r[0].rawValue)return r[0].rawValue}}catch(e){}
+  return null;
+}
+function buildUpiLink(total,ref){
+  let pa=(S.upi||"").trim(),pn=S.brand,mc="";
+  if(S.qrData){try{const q=new URLSearchParams(S.qrData.split("?")[1]||"");pa=q.get("pa")||pa;pn=q.get("pn")||pn;mc=q.get("mc")||""}catch(e){}}
+  if(!pa)return "";
+  const e=encodeURIComponent;
+  return `upi://pay?pa=${e(pa).replace(/%40/g,"@")}&pn=${e(pn)}${mc?`&mc=${e(mc)}`:""}&am=${total.toFixed(2)}&cu=INR&tn=${e("Order "+ref)}`;
+}
+function upiInfoHtml(){
+  if(!S.qr&&!S.upiNo&&!S.upi)return '<p class="empty" style="padding:0">The store hasn\'t added UPI details yet. Please confirm payment with the store on WhatsApp.</p>';
+  return (S.qr?`<img src="${esc(S.qr)}" alt="UPI QR code" style="width:100%;max-width:230px;display:block;margin:0 auto 10px;border-radius:8px;background:#fff">`:"")
+   +(S.upiNo?`<div>UPI number: <strong>${esc(S.upiNo)}</strong></div>`:"")
+   +(S.upi?`<div>UPI ID: <strong>${esc(S.upi)}</strong></div>`:"");
+}
+/* ===== Online payment (Razorpay + your backend). PAID only after server verification ===== */
+const API_BASE="https://dask-pay.YOUR-SUBDOMAIN.workers.dev"; /* <-- apna Cloudflare Worker URL yahan daalo */
+const API_READY=!/YOUR-SUBDOMAIN/.test(API_BASE);
+const rnd=()=>(window.crypto&&crypto.randomUUID)?crypto.randomUUID():Date.now()+"-"+Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2);
+function idemFor(sig){let x=null;try{x=JSON.parse(sessionStorage.getItem("dask-idem")||"null")}catch(e){}if(!x||x.sig!==sig){x={sig,k:rnd()};try{sessionStorage.setItem("dask-idem",JSON.stringify(x))}catch(e){}}return x.k}
+async function api(path,opt){const r=await fetch(API_BASE+path,opt);const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error||"Request failed ("+r.status+")");return j}
+const jpost=(path,b)=>api(path,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(b)});
+const loadRzp=()=>new Promise((ok,no)=>{if(window.Razorpay)return ok();const t=document.createElement("script");t.src="https://checkout.razorpay.com/v1/checkout.js";t.onload=ok;t.onerror=()=>no(new Error("Couldn't load the payment window. Check your internet."));document.head.appendChild(t)});
+let ONL=null;
+function pscreen(title,html,foot){$("ctitle").textContent=title;$("items").innerHTML=html;$("foot").innerHTML=foot||"";openCart()}
+const pwait=(t,m)=>pscreen(t,`<p><strong>${esc(t)}</strong></p><p class="empty">${esc(m)}</p>`,"");
+function pfail(t,m){pscreen("Payment not completed",`<p><strong>${esc(t)}</strong></p><p>${esc(m)}</p><p class="empty">Order ID: ${esc(ONL.o.orderId)} · Status: NOT PAID</p>`,`<button class="primary" id="retry">Try payment again</button>`);$("retry").onclick=openRzp}
+async function startOnline(d){
+  const btn=$("pay"),box=$("upiinfo"),err=m=>{box.hidden=false;box.textContent=m;btn.disabled=false};
+  if(!API_READY)return err("Online payment is not set up yet. Please choose Cash on Delivery or contact the store.");
+  btn.disabled=true;
+  try{
+    const o=await jpost("/create-order",{idem:idemFor(JSON.stringify([cart,d.mobile,d.address,d.pin])),items:cart.map(l=>({id:l.id,size:l.size,q:l.q})),customer:{name:d.name,mobile:d.mobile,address:d.address,pin:d.pin,city:d.city}});
+    ONL={o,d,lines:cart.map(l=>{const p=PRODUCTS.find(x=>x.id===l.id);return `${p.name} (${l.size}) x${l.q}`}),done:false,paying:false};
+    if(o.status==="PAID")return onPaid(o.paymentId);
+    await loadRzp();openRzp();
+  }catch(e){err("Couldn't start payment: "+e.message)}
+}
+function openRzp(){
+  const {o,d}=ONL;ONL.paying=false;
+  pwait("Waiting for payment…","Complete the payment in the secure Razorpay window.");
+  new Razorpay({key:o.keyId,amount:o.amount,currency:o.currency,order_id:o.rzpOrderId,name:S.brand,description:"Order "+o.orderId,prefill:{name:d.name,contact:d.mobile},theme:{color:S.accent},
+    handler:async r=>{ONL.paying=true;pwait("Verifying payment…","Please don't close this page.");try{await jpost("/verify",{orderId:o.orderId,...r})}catch(e){}poll(0)},
+    modal:{ondismiss:()=>{if(!ONL.paying&&!ONL.done)pfail("Payment not completed","The payment window was closed. If any amount was deducted, it will be confirmed automatically or refunded by your bank.")}}}).open();
+}
+async function poll(n){
+  if(!ONL||ONL.done)return;
+  try{const s=await api("/status?id="+encodeURIComponent(ONL.o.orderId));
+    if(s.status==="PAID")return onPaid(s.paymentId);
+    if(s.status==="FAILED"&&n>=2)return pfail("Payment failed","Your bank or UPI app declined the payment. This order is NOT paid.");
+  }catch(e){}
+  if(n>=40){pscreen("Verification pending",`<p>We haven't received the payment confirmation yet. <strong>If money was deducted, please don't pay again</strong> – it will be confirmed automatically, or refunded by your bank.</p><p class="empty">Order ID: ${esc(ONL.o.orderId)}</p>`,`<button class="primary" id="chk">Check again</button>`);$("chk").onclick=()=>{pwait("Checking…","Please wait.");poll(0)};return}
+  setTimeout(()=>poll(n+1),3000);
+}
+function onPaid(pid){
+  if(ONL.done)return;ONL.done=true;
+  const {o,d,lines}=ONL,amt=o.amount/100,tot="₹"+amt.toFixed(2),wa=(S.wa||"").replace(/\D/g,"");
+  try{const a=JSON.parse(LG("orders")||"[]");if(!a.some(x=>x.ref===o.orderId)){a.unshift({ref:o.orderId,date:new Date().toISOString(),lines,total:tot,amt,status:"sold",pay:"ONLINE",payStatus:"paid",payId:pid||"",...d});localStorage.setItem("dask-orders",JSON.stringify(a.slice(0,500)))}}catch(e){}
+  cart=[];save();try{sessionStorage.removeItem("dask-idem")}catch(e){}
+  $("count").textContent="0";
+  const msg=`New order ${o.orderId}\n${lines.join("\n")}\nTotal: ${tot}\n\nName: ${d.name}\nMobile: ${d.mobile}\nAddress: ${d.address}\nPIN: ${d.pin}\nCity/State: ${d.city}\nPayment: PAID (Online, verified)${pid?" – Payment ID: "+pid:""}`;
+  pscreen("Payment successful",`<p>✅ Payment verified! Your order <strong>${esc(o.orderId)}</strong> is <strong>PAID</strong>.</p>`+(wa?`<p>Tap below to send your order details to the store.</p><a class="primary" target="_blank" rel="noopener" href="https://wa.me/${wa}?text=${encodeURIComponent(msg)}">Order on WhatsApp</a>`:`<p>The store hasn't added a WhatsApp number yet.</p>`),`<button class="primary" id="done">Keep shopping</button>`);
+  $("done").onclick=()=>{closeCart();renderCart()};
+}
 function checkout(){
-  let c={};try{c=JSON.parse(localStorage.getItem("hemline-customer")||"{}")}catch(e){}
+  let c={};try{c=JSON.parse(LG("customer")||"{}")}catch(e){}
   $("ctitle").textContent="Checkout";
   $("items").innerHTML=`<form id="f">
    <label>Customer name<input name="name" required autocomplete="name" value="${esc(c.name||"")}"></label>
    <label>Mobile number<input name="mobile" required type="tel" inputmode="numeric" maxlength="10" pattern="[0-9]{10}" title="Enter a 10-digit mobile number" autocomplete="tel-national" placeholder="10-digit number" value="${esc(c.mobile||"")}"></label>
    <label>Full delivery address<textarea name="address" required rows="3" autocomplete="street-address" placeholder="House no., street, area, landmark">${esc(c.address||"")}</textarea></label>
    <label>PIN code<input name="pin" required inputmode="numeric" maxlength="6" pattern="[0-9]{6}" title="Enter a 6-digit PIN code" autocomplete="postal-code" placeholder="6-digit PIN" value="${esc(c.pin||"")}"></label>
-   <label>City / State<input name="city" required autocomplete="address-level2" placeholder="e.g. Jaipur, Rajasthan" value="${esc(c.city||"")}"></label></form>`;
+   <label>City / State<input name="city" required autocomplete="address-level2" placeholder="e.g. Jaipur, Rajasthan" value="${esc(c.city||"")}"></label>
+   <fieldset class="payf"><legend>Payment method</legend>
+    <label class="radio"><input type="radio" name="pay" value="COD" ${c.pay==="ONLINE"?"":"checked"}> Cash on Delivery (COD)</label>
+    <label class="radio"><input type="radio" name="pay" value="ONLINE" ${c.pay==="ONLINE"?"checked":""}> Pay online (UPI / Card / NetBanking)</label></fieldset><div class="upibox" id="upiinfo" hidden></div></form>`;
   $("f").onsubmit=e=>e.preventDefault();
+  const updUpi=()=>{const on=$("f").pay.value==="ONLINE",b=$("upiinfo");b.hidden=!on;b.textContent=on?"Secure online payment via Razorpay (UPI, cards, netbanking). Your order is marked PAID and the WhatsApp button unlocks only after the payment is verified by our server.":""};
+  $("f").querySelectorAll('input[name="pay"]').forEach(r=>r.onchange=updUpi);updUpi();
   $("foot").innerHTML=`<div class="total"><span>Total</span><span>${money(totals())}</span></div><button class="primary" id="pay">Place order</button>`;
   $("pay").onclick=()=>{const f=$("f");if(!f.reportValidity())return;
     const d=Object.fromEntries(new FormData(f));
-    const ref="HL-"+Math.floor(100000+Math.random()*900000);
+    if(d.pay==="ONLINE"){startOnline(d);return}
+    const ref="DK-"+Math.floor(100000+Math.random()*900000);
     const lines=cart.map(l=>{const p=PRODUCTS.find(x=>x.id===l.id);return `${p.name} (${l.size}) x${l.q} = ${money(p.price*l.q)}`});
     const total=totals();
-    const order={ref,date:new Date().toISOString(),lines,total:money(total),...d};
-    try{localStorage.setItem("hemline-customer",JSON.stringify(d));
-      const o=JSON.parse(localStorage.getItem("hemline-orders")||"[]");o.unshift(order);
-      localStorage.setItem("hemline-orders",JSON.stringify(o.slice(0,50)))}catch(e){}
-    const msg=`New order ${ref}\n${lines.join("\n")}\nTotal: ${money(total)}\n\nName: ${d.name}\nMobile: ${d.mobile}\nAddress: ${d.address}\nPIN: ${d.pin}\nCity/State: ${d.city}`;
+    const order={ref,date:new Date().toISOString(),lines,total:money(total),amt:total,status:"sold",payStatus:"pending",...d};
+    try{localStorage.setItem("dask-customer",JSON.stringify(d));
+      const o=JSON.parse(LG("orders")||"[]");o.unshift(order);
+      localStorage.setItem("dask-orders",JSON.stringify(o.slice(0,500)))}catch(e){}
+    const buildMsg=pl=>`New order ${ref}\n${lines.join("\n")}\nTotal: ${money(total)}\n\nName: ${d.name}\nMobile: ${d.mobile}\nAddress: ${d.address}\nPIN: ${d.pin}\nCity/State: ${d.city}\nPayment: ${pl}`;
     const wa=(S.wa||"").replace(/\D/g,"");
+    const waLink=pl=>"https://wa.me/"+wa+"?text="+encodeURIComponent(buildMsg(pl));
     cart=[];save();$("count").textContent="0";$("ctitle").textContent="Order placed";
-    $("items").innerHTML=`<p>Thanks, ${esc(d.name)}! Your order <strong>${ref}</strong> is saved.</p>`+(wa?`<p>Tap below to send your order details to the store.</p><a class="primary" target="_blank" rel="noopener" href="https://wa.me/${wa}?text=${encodeURIComponent(msg)}">Send order on WhatsApp</a>`:`<p>The store hasn't added a WhatsApp number yet, so this order is saved only on this device.</p>`);
-    $("foot").innerHTML=`<button class="primary" id="done">Keep shopping</button>`;$("done").onclick=()=>{closeCart();renderCart()};};
+    const setPay=(st,utr)=>{try{const o=JSON.parse(LG("orders")||"[]"),x=o.find(i=>i.ref===ref);if(x){x.payStatus=st;if(utr)x.utr=utr;localStorage.setItem("dask-orders",JSON.stringify(o))}}catch(e){}};
+    $("foot").innerHTML=`<button class="primary" id="done">Keep shopping</button>`;$("done").onclick=()=>{closeCart();renderCart()};
+    if(d.pay!=="UPI"){
+      const pl="Cash on Delivery (COD) – PAYMENT PENDING";
+      $("items").innerHTML=`<p>Thanks, ${esc(d.name)}! Your order <strong>${ref}</strong> is placed.</p><p>Payment: Cash on Delivery – <strong>Pending</strong>. Please keep ${money(total)} ready at delivery.</p>`+(wa?`<p>WhatsApp should open with your order details. If it doesn't, tap below.</p><a class="primary" target="_blank" rel="noopener" href="${esc(waLink(pl))}">Send order on WhatsApp</a>`:`<p>The store hasn't added a WhatsApp number yet, so this order is saved only on this device.</p>`);
+      if(wa)window.open(waLink(pl),"_blank");
+      return;
+    }
+  };
 }
 function openCart(){$("cart").classList.add("open");$("cart").setAttribute("aria-hidden","false");$("scrim").classList.add("on")}
-function closeCart(){$("editor").classList.remove("open");$("editor").setAttribute("aria-hidden","true");$("cart").classList.remove("open");$("cart").setAttribute("aria-hidden","true");$("scrim").classList.remove("on")}
+function closeCart(){unlocked=false;adminOk=false;$("editor").classList.remove("open");$("editor").setAttribute("aria-hidden","true");$("cart").classList.remove("open");$("cart").setAttribute("aria-hidden","true");$("scrim").classList.remove("on")}
 $("open").onclick=()=>{renderCart();openCart()};
 $("close").onclick=$("scrim").onclick=closeCart;
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeCart()});
 const esc=t=>String(t).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
-function applySettings(){const bi=$("bgimg");bi.style.backgroundImage=S.bg?`url("${S.bg}")`:"none";document.documentElement.classList.toggle("hasbg",!!S.bg);document.documentElement.style.setProperty("--bgo",(S.bgo==null?55:S.bgo)/100);$("logo").innerHTML=(S.logo?`<img src="${esc(S.logo)}" alt="">`:`<span class="mark" aria-hidden="true">${esc((S.brand||"H").trim().charAt(0).toUpperCase())}</span>`)+`<span>${esc(S.brand)}</span>`;document.title=S.brand+" – Everyday Clothing";$("h1").textContent=S.headline;$("sub").textContent=S.sub;document.documentElement.style.setProperty("--accent",S.accent)}
+function applySettings(){const bi=$("bgimg");bi.style.backgroundImage=S.bg?`url("${S.bg}")`:"none";document.documentElement.classList.toggle("hasbg",!!S.bg);document.documentElement.style.setProperty("--bgo",(S.bgo==null?55:S.bgo)/100);$("logo").innerHTML=(S.logo?`<img src="${esc(S.logo)}" alt="">`:`<span class="mark" aria-hidden="true">${esc((S.brand||"D").trim().charAt(0).toUpperCase())}</span>`)+`<span>${esc(S.brand)}</span>`;document.title=S.brand+" – Soft Basics, Tees, Hoodies & Jeans";$("h1").textContent=S.headline;$("sub").textContent=S.sub;document.documentElement.style.setProperty("--accent",S.accent)}
 function refresh(){markDirty();applySettings();renderFilters();renderGrid();renderCart()}
 function renderEditor(){
-  let orders=[];try{orders=JSON.parse(localStorage.getItem("hemline-orders")||"[]")}catch(e){}
+  let orders=[];try{orders=JSON.parse(LG("orders")||"[]")}catch(e){}
   $("ebody").innerHTML=`
-  <div class="savebar"><button class="primary" id="savebtn">Save changes</button><button class="chip" id="bkp">Backup</button><button class="chip" id="rst">Restore</button><input type="file" id="rfile" accept=".json,application/json" class="vh" aria-label="Restore backup file"><small id="savemsg" role="status">${dirty?"Unsaved changes":"All changes saved"}</small></div>
+  <div class="savebar"><button class="chip" id="back" type="button">← Admin</button><button class="primary" id="savebtn">Save changes</button><button class="chip" id="bkp">Backup</button><button class="chip" id="rst">Restore</button><input type="file" id="rfile" accept=".json,application/json" class="vh" aria-label="Restore backup file"><small id="savemsg" role="status">${dirty?"Unsaved changes":"All changes saved"}</small></div>
   <div class="logoup"><span>Logo image</span><button type="button" class="add" id="pick">Choose photo from gallery or files</button><input type="file" id="e-logo" accept="image/*" class="vh" aria-label="Logo image file"><small id="logomsg" role="status"></small></div>
   ${S.logo?'<button class="chip" id="rmlogo">Remove logo</button>':''}
   <h3>Theme</h3>
@@ -220,14 +325,20 @@ function renderEditor(){
   <label>Subtext<input id="e-sub" value="${esc(S.sub)}"></label>
   <label>Button color<input type="color" id="e-acc" value="${S.accent}"></label>
   <label>Currency symbol<input id="e-cur" maxlength="3" value="${esc(S.cur)}"></label>
+  <h3>UPI payment</h3>
+  <div class="logoup"><span>UPI QR code image</span>${S.qr?`<img src="${esc(S.qr)}" alt="QR code preview" style="width:110px;height:110px;object-fit:contain;background:#fff;border-radius:8px;border:1px solid var(--line)">`:""}<button type="button" class="add" id="pickqr">${S.qr?"Change QR code":"Upload QR code"}</button><input type="file" id="e-qr" accept="image/*" class="vh" aria-label="QR code image file"><small id="qrmsg" role="status"></small></div>
+  ${S.qr?'<button class="chip" id="rmqr">Remove QR code</button>':''}
+  <label>UPI number (phone number linked to UPI)<input id="e-upino" type="tel" inputmode="numeric" value="${esc(S.upiNo||"")}"></label>
+  <label>UPI ID (e.g. name@bank)<input id="e-upi" value="${esc(S.upi||"")}" autocapitalize="none" spellcheck="false"></label>
   <label>WhatsApp number for orders (with country code, e.g. 919876543210)<input id="e-wa" type="tel" inputmode="numeric" value="${esc(S.wa)}"></label>
   <h3>Products</h3>
   ${PRODUCTS.map((p,i)=>`<div class="pe"><input data-i="${i}" data-k="name" value="${esc(p.name)}" aria-label="Product name"><input data-i="${i}" data-k="cat" value="${esc(p.cat)}" aria-label="Category"><input data-i="${i}" data-k="price" type="number" min="0" step="0.01" value="${p.price}" aria-label="Price"><input data-i="${i}" data-k="color" type="color" value="${p.color}" aria-label="Tile color (used when no photo)" title="Tile color (used when no photo)"><button class="x" data-del="${i}" aria-label="Delete product">🗑</button><div class="pph">${p.img?`<img src="${esc(p.img)}" alt="" class="pthumb">`:""}<button type="button" class="chip" data-pick="${i}">${p.img?"Change photo":"Upload photo"}</button>${p.img?`<button type="button" class="chip" data-rmimg="${i}">Remove photo</button>`:""}<input type="file" accept="image/*" class="vh" data-file="${i}" aria-label="Product photo file"></div></div>`).join("")}
   <button class="primary" id="addp">Add product</button>
   <h3>Saved orders</h3>
   ${orders.length?orders.map(o=>`<div class="ord"><strong>${esc(o.ref)}</strong> · ${esc(o.total)}<br>${esc(o.name)}, ${esc(o.mobile)}<br><small>${esc(o.address)}, ${esc(o.city)} ${esc(o.pin)}</small><br><small>${o.lines.map(esc).join("; ")}</small></div>`).join(""):'<p class="empty">No orders saved on this device yet.</p>'}`;
+  $("back").onclick=renderAdminHome;
   const bind=(id,k)=>$(id).oninput=e=>{S[k]=e.target.value;refresh()};
-  bind("e-brand","brand");bind("e-head","headline");bind("e-sub","sub");bind("e-acc","accent");bind("e-cur","cur");bind("e-wa","wa");
+  bind("e-brand","brand");bind("e-head","headline");bind("e-sub","sub");bind("e-acc","accent");bind("e-cur","cur");bind("e-wa","wa");bind("e-upi","upi");bind("e-upino","upiNo");
   $("ebody").querySelectorAll(".pe input[data-k]").forEach(inp=>inp.oninput=()=>{
     const p=PRODUCTS[+inp.dataset.i],k=inp.dataset.k;
     p[k]=k==="price"?(parseFloat(inp.value)||0):inp.value;refresh()});
@@ -264,12 +375,80 @@ function renderEditor(){
       S.logo=c.toDataURL("image/png");refresh();renderEditor()};im.src=fr.result};
     fr.readAsDataURL(f)};
   if($("rmlogo"))$("rmlogo").onclick=()=>{S.logo="";refresh();renderEditor()};
+  $("pickqr").onclick=()=>$("e-qr").click();
+  $("e-qr").onchange=e=>{const f=e.target.files[0];if(!f)return;
+    const bad=()=>{$("qrmsg").textContent="Couldn't read this image. Try a JPG or PNG photo."};
+    const fr=new FileReader();fr.onerror=bad;
+    fr.onload=()=>{const im=new Image();im.onerror=bad;im.onload=()=>{
+      const m=Math.min(1,700/Math.max(im.width,im.height)),w=Math.round(im.width*m),h=Math.round(im.height*m),c=document.createElement("canvas");
+      c.width=w;c.height=h;const x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,w,h);x.drawImage(im,0,0,w,h);
+      S.qr=c.toDataURL("image/png");
+      decodeQR(c).then(t=>{S.qrData=t&&/^upi:/i.test(t)?t:"";refresh();renderEditor();
+        $("qrmsg").textContent=S.qrData?"QR read ✓ — buyer's UPI app will open with this QR's details and the order total.":"Couldn't read UPI details from this image, so the UPI ID below will be used. Make sure the QR is clear and fully visible."})};im.src=fr.result};
+    fr.readAsDataURL(f)};
+  if($("rmqr"))$("rmqr").onclick=()=>{S.qr="";S.qrData="";refresh();renderEditor()};
   $("savebtn").onclick=()=>{const ok=saveStore();dirty=!ok;$("savemsg").textContent=ok?"Saved ✓ — will stay after reload":"Couldn't save in this browser. Use Backup to keep a copy.";if(ok)$("savebtn").textContent="Saved ✓"};
-  $("bkp").onclick=()=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify({S,P:PRODUCTS})],{type:"application/json"}));a.download="hemline-backup.json";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
+  $("bkp").onclick=()=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify({S,P:PRODUCTS})],{type:"application/json"}));a.download="dask-backup.json";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
   $("rst").onclick=()=>$("rfile").click();
   $("rfile").onchange=e=>{const f=e.target.files[0];if(!f)return;const fr=new FileReader();fr.onload=()=>{try{const d=JSON.parse(fr.result);S={...DEF,...d.S};if(Array.isArray(d.P))PRODUCTS=d.P;refresh();renderEditor();$("savemsg").textContent="Backup loaded — tap Save changes"}catch(x){$("savemsg").textContent="Invalid backup file"}};fr.readAsText(f)};
 }
-$("edit").onclick=()=>{renderEditor();$("editor").classList.add("open");$("editor").setAttribute("aria-hidden","false");$("scrim").classList.add("on")};
+const PW_ADMIN={h:"20332b4a76402e1e5266a741729e521da15a7d88129d8ff908d202f07bdd5ce0",b:"MDYzMDA1"},PW_EDIT={h:"9f400439aaf506e785439e4e25ef31cf91e69d8ac1787acd2f4ed9e6a5483656",b:"TWlyY2hpQDA0OA=="};let adminOk=false,unlocked=false;
+async function pwOk(v,k){if(window.crypto&&crypto.subtle){try{const d=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(v));return[...new Uint8Array(d)].map(x=>x.toString(16).padStart(2,"0")).join("")===k.h}catch(e){}}return btoa(unescape(encodeURIComponent(v)))===k.b}
+function showEditor(){$("editor").classList.add("open");$("editor").setAttribute("aria-hidden","false");$("scrim").classList.add("on")}
+function renderLock(title,label,key,onOk,back){
+  $("etitle").textContent=title;
+  $("ebody").innerHTML=`<form id="lf"><label>${label}<input type="password" id="pw" autocomplete="current-password" required></label><button class="primary" type="submit">Unlock</button><small id="lmsg" role="alert"></small></form>${back?'<button class="chip" id="lback" type="button">← Back to Admin</button>':""}`;
+  $("lf").onsubmit=async e=>{e.preventDefault();
+    if(await pwOk($("pw").value,key)){onOk()}else{$("lmsg").textContent="Wrong password. Try again.";$("pw").value="";$("pw").focus()}};
+  if(back)$("lback").onclick=renderAdminHome;
+  showEditor();setTimeout(()=>{const i=$("pw");if(i)i.focus()},50);
+}
+const getOrders=()=>{try{return JSON.parse(LG("orders")||"[]")}catch(e){return[]}};
+const setOrders=o=>{try{localStorage.setItem("dask-orders",JSON.stringify(o));return true}catch(e){return false}};
+const oAmt=o=>o.amt!=null?o.amt:(parseFloat(String(o.total).replace(/[^0-9.]/g,""))||0);
+const oSt=o=>o.status||"sold";
+const sumA=a=>a.reduce((s,x)=>s+oAmt(x),0);
+const ST={sold:"Sold",returned:"Returned",cancelled:"Cancelled"};
+let aview="home";
+function setPayStatus(ref){const o=getOrders(),x=o.find(i=>i.ref===ref);if(x){x.payStatus="paid";setOrders(o)}renderAdmin(aview)}
+function setStatus(ref,status){const o=getOrders(),x=o.find(i=>i.ref===ref);if(x){x.status=status;setOrders(o)}renderAdmin(aview)}
+function renderAdmin(v){aview=v;({home:renderAdminHome,dash:renderDash,sold:()=>renderOrders("sold"),returned:()=>renderOrders("returned"),cancelled:()=>renderOrders("cancelled")})[v]()}
+const aBack='<button class="chip" id="aback" type="button">← Admin</button>';
+const bindBack=()=>{$("aback").onclick=renderAdminHome;};
+function renderAdminHome(){
+  aview="home";$("etitle").textContent="Admin";
+  const items=[["dash","Dashboard"],["sold","Net sales"],["returned","Net return"],["cancelled","Net cancel"],["edit","Edit store"]];
+  $("ebody").innerHTML=`<div class="amenu">${items.map((it,i)=>`<button class="aopt" type="button" data-v="${it[0]}"><span class="num">${i+1}</span><span>${it[1]}</span></button>`).join("")}</div>`;
+  $("ebody").querySelectorAll(".aopt").forEach(b=>b.onclick=()=>b.dataset.v==="edit"?openEditStore():renderAdmin(b.dataset.v));
+}
+function orderCard(o,mode){
+  const d=new Date(o.date),ds=isNaN(d)?"":d.toLocaleDateString();
+  const btns=mode==="sold"?`<button class="chip" data-r="${esc(o.ref)}">Mark returned</button><button class="chip" data-c="${esc(o.ref)}">Mark cancelled</button>${o.payStatus==="pending"?`<button class="chip" data-p="${esc(o.ref)}">Mark payment received</button>`:""}`:`<button class="chip" data-u="${esc(o.ref)}">Undo (back to sold)</button>`;
+  return `<div class="ord"><strong>${esc(o.ref)}</strong> · ${money(oAmt(o))} <small>${esc(ds)}${o.pay?" · "+(o.pay==="ONLINE"?"Online":o.pay==="UPI"?"UPI":"COD")+(o.payStatus?" · "+(o.payStatus==="paid"?"Paid":"Payment pending"):""):""}${o.utr?" · UTR "+esc(o.utr):""}${o.payId?" · "+esc(o.payId):""}</small><br>${esc(o.name||"")}, ${esc(o.mobile||"")}<br><small>${(o.lines||[]).map(esc).join("; ")}</small><div class="hbtns" style="margin-top:6px;flex-wrap:wrap">${btns}</div></div>`;
+}
+function renderDash(){
+  $("etitle").textContent="Dashboard";
+  const o=getOrders(),sold=o.filter(x=>oSt(x)==="sold"),ret=o.filter(x=>oSt(x)==="returned"),can=o.filter(x=>oSt(x)==="cancelled");
+  const stat=(l,v,n)=>`<div class="stat"><small>${l}</small><strong>${v}</strong><small>${n}</small></div>`;
+  $("ebody").innerHTML=`${aBack}<div class="stats">${stat("Net sales",money(sumA(sold)),sold.length+" orders")}${stat("Net return",money(sumA(ret)),ret.length+" orders")}${stat("Net cancel",money(sumA(can)),can.length+" orders")}${stat("All orders",money(sumA(o)),o.length+" orders")}${stat("Products",PRODUCTS.length,"in store")}${stat("Cart items",cart.reduce((s,l)=>s+l.q,0),"on this device")}</div><h3>Recent orders</h3>${o.length?o.slice(0,5).map(x=>`<div class="ord"><strong>${esc(x.ref)}</strong> · ${money(oAmt(x))} · <small>${ST[oSt(x)]}</small><br>${esc(x.name||"")}</div>`).join(""):'<p class="empty">No orders yet.</p>'}`;
+  bindBack();
+}
+function renderOrders(kind){
+  const T={sold:"Net sales",returned:"Net return",cancelled:"Net cancel"};
+  $("etitle").textContent=T[kind];
+  const l=getOrders().filter(x=>oSt(x)===kind);
+  $("ebody").innerHTML=`${aBack}<div class="stat"><small>${T[kind]}</small><strong>${money(sumA(l))}</strong><small>${l.length} orders</small></div>${l.length?l.map(x=>orderCard(x,kind)).join(""):'<p class="empty">No orders here yet.</p>'}`;
+  bindBack();
+  $("ebody").querySelectorAll("[data-r]").forEach(b=>b.onclick=()=>setStatus(b.dataset.r,"returned"));
+  $("ebody").querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>setStatus(b.dataset.c,"cancelled"));
+  $("ebody").querySelectorAll("[data-p]").forEach(b=>b.onclick=()=>setPayStatus(b.dataset.p));
+  $("ebody").querySelectorAll("[data-u]").forEach(b=>b.onclick=()=>setStatus(b.dataset.u,"sold"));
+}
+function openEditStore(){
+  if(unlocked){$("etitle").textContent="Edit store";renderEditor()}
+  else renderLock("Edit store","Enter password to edit store",PW_EDIT,()=>{unlocked=true;$("etitle").textContent="Edit store";renderEditor()},true);
+}
+$("admin").onclick=()=>{if(adminOk){renderAdminHome();showEditor()}else renderLock("Admin","Enter admin password",PW_ADMIN,()=>{adminOk=true;renderAdminHome()},false)};
 $("eclose").onclick=closeCart;
 applySettings();renderFilters();renderGrid();renderCart();
 </script>

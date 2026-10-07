@@ -1,0 +1,13 @@
+name = "dask-pay"
+main = "worker.js"
+compatibility_date = "2024-11-01"
+
+[vars]
+# Your GitHub Pages ORIGIN (no path, no trailing slash). Multiple: comma separated.
+ALLOWED_ORIGIN = "https://YOUR-GITHUB-USERNAME.github.io"
+# Razorpay Key ID is public (rzp_test_... / rzp_live_...). The SECRET goes via `wrangler secret put`.
+RAZORPAY_KEY_ID = "rzp_test_XXXXXXXXXXXX"
+
+[[kv_namespaces]]
+binding = "ORDERS"
+id = "PASTE_KV_NAMESPACE_ID_HERE"
