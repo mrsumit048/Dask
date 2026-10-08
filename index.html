@@ -17,14 +17,15 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","name":"Dask Everyday Clothing","alternateName":["Dask","Dask Clothing"]},{"@type":"Organization","name":"Dask Everyday Clothing","alternateName":"Dask"},{"@type":"ClothingStore","name":"Dask Everyday Clothing"}]}</script>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js" defer></script>
 <style>
 :root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
 --bg:#eceef4;--surface:#fff;--ink:#1f2a44;--muted:#5d6784;--accent:#f2b632;--accent-ink:#1f2a44;--line:#d3d8e6}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121828;--surface:#1b2438;--ink:#eceef4;--muted:#9aa5c4;--line:#2c3856}}
 :root[data-theme="dark"]{--bg:#121828;--surface:#1b2438;--ink:#eceef4;--muted:#9aa5c4;--line:#2c3856}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html{font-size:calc(var(--fs,16)*1px);scroll-padding-top:env(safe-area-inset-top,0px)}
 *,*::before,*::after{box-sizing:inherit}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:"Bricolage Grotesque",system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.5}
+body{margin:0;background:var(--bg);color:var(--tx,var(--ink));font-family:"Bricolage Grotesque",system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.5}
 header{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5;border-bottom:1px solid var(--line)}
 #bgimg{position:fixed;inset:0;z-index:-1;display:none;background-size:cover;background-position:center;background-repeat:no-repeat}
 #bgimg::after{content:"";position:absolute;inset:0;background:var(--bg);opacity:var(--bgo,.55)}
@@ -38,8 +39,8 @@ button{font:inherit;cursor:pointer}
 button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible,a:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .cartbtn{background:var(--ink);color:var(--bg);border:0;border-radius:999px;padding:8px 16px;font-weight:600}
 .hero{padding:44px 20px 24px;max-width:960px;margin:0 auto}
-.hero h1{font-size:clamp(2.6rem,10vw,5.5rem);line-height:.95;letter-spacing:-.04em;font-weight:800;margin:0 0 14px}
-.hero p{max-width:46ch;color:var(--muted);margin:0}
+.hero h1{font-size:calc(clamp(2.6rem,10vw,5.5rem)*var(--hs,1));color:var(--hc,inherit);line-height:.95;letter-spacing:-.04em;font-weight:800;margin:0 0 14px}
+.hero p{max-width:46ch;color:var(--sc,var(--muted));font-family:var(--sf,inherit);font-size:var(--sz,inherit);margin:0}
 .filters{display:flex;gap:8px;padding:12px 20px;max-width:960px;margin:0 auto;overflow-x:auto}
 .chip{border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:999px;padding:6px 14px;white-space:nowrap}
 .chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
@@ -49,6 +50,15 @@ button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-vis
 .info{padding:12px;display:flex;flex-direction:column;gap:8px;flex:1}
 .info h3{margin:0;font-size:1rem;font-weight:600}
 .price{color:var(--muted)}
+.tile{position:relative}
+.dbadge{position:absolute;top:10px;right:10px;background:#e03131;color:#fff;font-size:.8rem;font-weight:700;letter-spacing:0;padding:4px 8px;border-radius:4px;line-height:1.2}
+.was{text-decoration:line-through;margin-left:8px;font-size:.9em;opacity:.8}
+.sel{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.sel select{flex:0 0 auto}
+.qs{display:flex;align-items:center;gap:10px}
+.qs button{width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:none;color:var(--ink);font-size:1.1rem;line-height:1}
+.qs span{min-width:2ch;text-align:center;font-weight:600}
+.pe input[data-k=disc]{width:64px}
 .row{display:flex;flex-direction:column;gap:8px;margin-top:auto}
 .btns{display:flex;gap:8px}
 .buy{flex:1;background:var(--ink);color:var(--bg);border:0;border-radius:6px;padding:8px 6px;font-weight:600;font-size:.9rem}
@@ -79,6 +89,24 @@ input[type=color]{padding:2px;height:36px;width:44px}
 .pe{display:flex;flex-wrap:wrap;gap:6px;padding:10px 0;border-bottom:1px solid var(--line)}
 .pph{flex:1 1 100%;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
 .pthumb{width:44px;height:44px;object-fit:cover;border-radius:6px;border:1px solid var(--line)}
+.gal{position:absolute;inset:0;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+.gal::-webkit-scrollbar{display:none}
+.gal img{flex:0 0 100%;width:100%;height:100%;object-fit:cover;scroll-snap-align:start;scroll-snap-stop:always;user-select:none}
+.gnav{position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;border:0;background:rgba(0,0,0,.45);color:#fff;font-size:1.4rem;line-height:1;display:grid;place-items:center;padding:0}
+.gprev{left:8px}.gnext{right:8px}
+.gcount{position:absolute;right:10px;bottom:10px;background:rgba(0,0,0,.55);color:#fff;font-size:.75rem;font-weight:600;padding:2px 8px;border-radius:999px;letter-spacing:0;line-height:1.4}
+.pgrid{flex-direction:column;align-items:stretch}
+.phead{display:flex;flex-direction:column;gap:2px}
+.phead small{color:var(--muted)}
+.phead small.warn{color:#e03131;font-weight:600}
+.thumbs{display:flex;flex-wrap:wrap;gap:10px}
+.th{position:relative}
+.th .pthumb{width:64px;height:64px;display:block}
+.cov{position:absolute;left:3px;bottom:3px;background:var(--accent);color:var(--accent-ink);font-size:.62rem;font-weight:800;padding:1px 5px;border-radius:4px}
+.thb{position:absolute;width:22px;height:22px;border-radius:50%;border:0;background:rgba(0,0,0,.7);color:#fff;font-size:.85rem;line-height:1;padding:0;display:grid;place-items:center}
+.thb.rm{top:-7px;right:-7px}
+.thb.mk{left:3px;bottom:3px;width:20px;height:20px}
+.chip:disabled{opacity:.5;cursor:not-allowed}
 .pe input[data-k=name]{flex:1 1 100%}
 .pe input[data-k=cat]{flex:1;min-width:0}
 .pe input[data-k=price]{width:80px}
@@ -102,6 +130,15 @@ input[type=radio]{padding:0;width:20px;height:20px;accent-color:var(--accent-ink
 .upibox{border:1px solid var(--line);border-radius:8px;padding:12px;margin-top:10px}
 .scrim{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:9;display:none}
 .scrim.on{display:block}
+
+#files{position:fixed;inset:0;z-index:20;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;padding:calc(12px + env(safe-area-inset-top,0px)) 12px calc(12px + env(safe-area-inset-bottom,0px))}
+#files[hidden]{display:none}
+.fbox{background:var(--surface);color:var(--ink);width:min(900px,100%);height:100%;max-height:900px;border-radius:12px;display:flex;flex-direction:column;padding:16px;gap:10px;min-height:0}
+.ftabs{display:flex;gap:8px;overflow-x:auto}
+.fbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.fbar span{flex:1;color:var(--muted);font-size:.9rem;min-width:0}
+#fpre{flex:1;min-height:0;overflow:auto;margin:0;padding:12px;background:var(--bg);border:1px solid var(--line);border-radius:8px;font:12px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:pre;tab-size:2}
+#fpre.wrap{white-space:pre-wrap;word-break:break-word}
 </style>
 </head>
 <body>
@@ -117,7 +154,7 @@ input[type=radio]{padding:0;width:20px;height:20px;accent-color:var(--accent-ink
 <div class="filters" id="filters" role="group" aria-label="Filter by category"></div>
 <main class="grid" id="grid"></main>
 
-<footer style="text-align:center;color:var(--muted);padding:0 20px 32px;font-size:.9rem">© Dask Everyday Clothing</footer>
+<footer id="sitefoot" style="text-align:center;color:var(--cc,var(--muted));font-family:var(--cf,inherit);padding:0 20px 32px;font-size:var(--cz,.9rem)">© Dask Everyday Clothing</footer>
 
 <div class="scrim" id="scrim"></div>
 <aside id="cart" aria-label="Shopping cart" aria-hidden="true">
@@ -130,6 +167,267 @@ input[type=radio]{padding:0;width:20px;height:20px;accent-color:var(--accent-ink
   <div id="ebody"></div>
 </aside>
 
+<div id="files" role="dialog" aria-modal="true" aria-label="Backend files" hidden>
+  <div class="fbox">
+    <div class="sh"><h2>Backend files</h2><button class="x" id="fclose" aria-label="Close backend files">×</button></div>
+    <div class="ftabs" id="ftabs" role="group" aria-label="Choose a file"></div>
+    <div class="fbar"><span id="fname"></span><button class="chip" id="fcopy" type="button">Copy</button><button class="chip" id="fdl" type="button">Download</button></div>
+    <pre id="fpre" tabindex="0"></pre>
+  </div>
+</div>
+<script type="text/plain" id="src-worker" data-name="worker.js">// Dask Everyday Clothing – payment backend (Cloudflare Workers, free tier) + Razorpay
+// Secrets (never in frontend): RAZORPAY_KEY_SECRET, RAZORPAY_WEBHOOK_SECRET, ADMIN_TOKEN (optional)
+
+// ⚠️ SERVER-SIDE PRICE LIST (in ₹ INR). Customer can't tamper with prices – amount is computed here.
+// Keep ids/prices in sync with your website products. New product added on the site => add it here too.
+const PRODUCTS = {
+  1: { name: "Heavyweight tee", price: 28 },
+  2: { name: "Boxy hoodie", price: 64 },
+  3: { name: "Linen shirt", price: 52 },
+  4: { name: "Straight jeans", price: 78 },
+  5: { name: "Pleated trousers", price: 70 },
+  6: { name: "Cargo shorts", price: 48 },
+  7: { name: "Rain shell", price: 110 },
+  8: { name: "Wool overcoat", price: 190 },
+  9: { name: "Rib beanie", price: 22 },
+  10: { name: "Canvas tote", price: 26 },
+};
+const SIZES = ["XS", "S", "M", "L", "XL"];
+const enc = new TextEncoder();
+
+const json = (o, s = 200, h = {}) =>
+  new Response(JSON.stringify(o), { status: s, headers: { "content-type": "application/json", ...h } });
+
+function corsHeaders(env, req) {
+  const o = req.headers.get("Origin");
+  const allowed = (env.ALLOWED_ORIGIN || "").split(",").map((x) => x.trim()).filter(Boolean);
+  return o && allowed.includes(o)
+    ? { "Access-Control-Allow-Origin": o, "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type,Authorization", Vary: "Origin" }
+    : {};
+}
+async function hmacHex(secret, msg) {
+  const k = await crypto.subtle.importKey("raw", enc.encode(secret), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+  const s = await crypto.subtle.sign("HMAC", k, enc.encode(msg));
+  return [...new Uint8Array(s)].map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+function safeEq(a, b) { // constant-time compare
+  a = String(a); b = String(b);
+  if (a.length !== b.length) return false;
+  let r = 0;
+  for (let i = 0; i < a.length; i++) r |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return r === 0;
+}
+const newId = () => "DK-" + [...crypto.getRandomValues(new Uint8Array(8))].map((b) => "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"[b % 32]).join("");
+const getOrder = async (env, id) => { const v = await env.ORDERS.get("order:" + id); return v ? JSON.parse(v) : null; };
+const saveOrder = (env, o) => env.ORDERS.put("order:" + o.id, JSON.stringify(o));
+
+// ---- status machine: PENDING -> PAID | FAILED ; FAILED -> PAID ; PAID is final ----
+async function markPaid(env, o, paymentId) {
+  if (o.status === "PAID") {
+    if (paymentId && paymentId !== o.paymentId && !(o.extraPayments || []).includes(paymentId)) {
+      o.extraPayments = [...(o.extraPayments || []), paymentId]; // duplicate payment -> refund manually
+      await saveOrder(env, o);
+    }
+    return o;
+  }
+  o.status = "PAID"; o.paymentId = paymentId; o.paidAt = new Date().toISOString();
+  await saveOrder(env, o);
+  return o;
+}
+async function markFailed(env, o) {
+  if (o.status !== "PENDING") return o; // never downgrade PAID
+  o.status = "FAILED"; o.failedAt = new Date().toISOString();
+  await saveOrder(env, o);
+  return o;
+}
+
+async function createOrder(env, body) {
+  const idem = String(body.idem || "");
+  if (!/^[\w-]{16,64}$/.test(idem)) return json({ error: "Invalid request" }, 400);
+  const c = body.customer || {};
+  const name = String(c.name || "").trim(), mobile = String(c.mobile || "").trim(),
+    address = String(c.address || "").trim(), pin = String(c.pin || "").trim(), city = String(c.city || "").trim();
+  if (name.length < 2 || name.length > 60 || !/^\d{10}$/.test(mobile) || address.length < 5 || address.length > 300 ||
+      !/^\d{6}$/.test(pin) || city.length < 2 || city.length > 80) return json({ error: "Please check your name, mobile, address, PIN and city." }, 400);
+  if (!Array.isArray(body.items) || !body.items.length || body.items.length > 20) return json({ error: "Cart is empty" }, 400);
+
+  let total = 0; const items = [];
+  for (const it of body.items) {
+    const p = PRODUCTS[it.id], q = Number(it.q);
+    if (!p || !SIZES.includes(it.size) || !Number.isInteger(q) || q < 1 || q > 20) return json({ error: "Invalid product in cart" }, 400);
+    total += p.price * q; items.push({ id: Number(it.id), name: p.name, size: it.size, q, price: p.price });
+  }
+  const amount = Math.round(total * 100); // paise
+
+  // duplicate protection: same idempotency key => same order (no second order / second payment link)
+  const existingId = await env.ORDERS.get("idem:" + idem);
+  if (existingId) {
+    const ex = await getOrder(env, existingId);
+    if (ex) return json({ orderId: ex.id, rzpOrderId: ex.rzpOrderId, amount: ex.amount, currency: "INR", keyId: env.RAZORPAY_KEY_ID, status: ex.status, paymentId: ex.paymentId || null });
+  }
+  const id = newId();
+  const r = await fetch("https://api.razorpay.com/v1/orders", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Authorization: "Basic " + btoa(env.RAZORPAY_KEY_ID + ":" + env.RAZORPAY_KEY_SECRET) },
+    body: JSON.stringify({ amount, currency: "INR", receipt: id, notes: { orderId: id } }),
+  });
+  if (!r.ok) return json({ error: "Payment gateway error. Please try again." }, 502);
+  const rz = await r.json();
+  const order = { id, rzpOrderId: rz.id, amount, status: "PENDING", items, customer: { name, mobile, address, pin, city }, createdAt: new Date().toISOString() };
+  await saveOrder(env, order);
+  await env.ORDERS.put("rzp:" + rz.id, id);
+  await env.ORDERS.put("idem:" + idem, id, { expirationTtl: 7 * 86400 });
+  return json({ orderId: id, rzpOrderId: rz.id, amount, currency: "INR", keyId: env.RAZORPAY_KEY_ID, status: "PENDING" });
+}
+
+// Backend signature check of the checkout response (authentic only if signed with your key secret)
+async function verify(env, body) {
+  const o = await getOrder(env, String(body.orderId || ""));
+  if (!o || o.rzpOrderId !== body.razorpay_order_id || !body.razorpay_payment_id || !body.razorpay_signature) return json({ error: "Invalid" }, 400);
+  const exp = await hmacHex(env.RAZORPAY_KEY_SECRET, o.rzpOrderId + "|" + body.razorpay_payment_id);
+  if (!safeEq(exp, body.razorpay_signature)) return json({ error: "Signature mismatch" }, 400);
+  const u = await markPaid(env, o, body.razorpay_payment_id);
+  return json({ status: u.status });
+}
+
+async function webhook(env, req) {
+  const raw = await req.text();
+  const sig = req.headers.get("X-Razorpay-Signature") || "";
+  const exp = await hmacHex(env.RAZORPAY_WEBHOOK_SECRET, raw);
+  if (!safeEq(exp, sig)) return json({ error: "Bad signature" }, 400); // fake webhooks rejected here
+  const evId = req.headers.get("x-razorpay-event-id");
+  if (evId) { if (await env.ORDERS.get("evt:" + evId)) return json({ ok: true, duplicate: true }); await env.ORDERS.put("evt:" + evId, "1", { expirationTtl: 3 * 86400 }); }
+  let ev; try { ev = JSON.parse(raw); } catch { return json({ error: "Bad body" }, 400); }
+  const pay = ev.payload && ev.payload.payment && ev.payload.payment.entity;
+  if (!pay || !pay.order_id) return json({ ok: true });
+  const oid = await env.ORDERS.get("rzp:" + pay.order_id);
+  const o = oid && (await getOrder(env, oid));
+  if (!o) return json({ ok: true });
+  if ((ev.event === "payment.captured" || ev.event === "order.paid") && pay.status === "captured") {
+    if (pay.amount !== o.amount || pay.currency !== "INR") { o.amountMismatch = true; await saveOrder(env, o); return json({ ok: true }); }
+    await markPaid(env, o, pay.id);
+  } else if (ev.event === "payment.failed") await markFailed(env, o);
+  return json({ ok: true });
+}
+
+export default {
+  async fetch(req, env) {
+    const url = new URL(req.url), cors = corsHeaders(env, req);
+    const reply = (res) => { Object.entries(cors).forEach(([k, v]) => res.headers.set(k, v)); return res; };
+    if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
+    try {
+      if (url.pathname === "/create-order" && req.method === "POST") return reply(await createOrder(env, await req.json()));
+      if (url.pathname === "/verify" && req.method === "POST") return reply(await verify(env, await req.json()));
+      if (url.pathname === "/webhook" && req.method === "POST") return webhook(env, req);
+      if (url.pathname === "/status" && req.method === "GET") {
+        const o = await getOrder(env, url.searchParams.get("id") || "");
+        return reply(o ? json({ status: o.status, paymentId: o.status === "PAID" ? o.paymentId : null }) : json({ error: "Not found" }, 404));
+      }
+      if (url.pathname === "/admin/orders" && env.ADMIN_TOKEN) {
+        if (!safeEq(req.headers.get("Authorization") || "", "Bearer " + env.ADMIN_TOKEN)) return json({ error: "Unauthorized" }, 401);
+        const list = await env.ORDERS.list({ prefix: "order:", limit: 200 });
+        const orders = (await Promise.all(list.keys.map((k) => env.ORDERS.get(k.name)))).map((v) => JSON.parse(v));
+        return json({ orders: orders.sort((a, b) => b.createdAt.localeCompare(a.createdAt)) });
+      }
+      return reply(json({ error: "Not found" }, 404));
+    } catch (e) {
+      return reply(json({ error: "Server error" }, 500));
+    }
+  },
+};
+</script>
+<script type="text/plain" id="src-wrangler" data-name="wrangler.toml">name = "dask-pay"
+main = "worker.js"
+compatibility_date = "2024-11-01"
+
+[vars]
+# Your GitHub Pages ORIGIN (no path, no trailing slash). Multiple: comma separated.
+ALLOWED_ORIGIN = "https://YOUR-GITHUB-USERNAME.github.io"
+# Razorpay Key ID is public (rzp_test_... / rzp_live_...). The SECRET goes via `wrangler secret put`.
+RAZORPAY_KEY_ID = "rzp_test_XXXXXXXXXXXX"
+
+[[kv_namespaces]]
+binding = "ORDERS"
+id = "PASTE_KV_NAMESPACE_ID_HERE"
+</script>
+<script type="text/plain" id="src-readme" data-name="README.md"># Dask Everyday Clothing – Secure Online Payment (Razorpay)
+
+## Kaise kaam karta hai
+1. Customer cart banata hai → naam, mobile, address bharta hai → **Pay online** chunta hai.
+2. Website backend ko sirf product id / size / qty bhejti hai. **Amount backend khud calculate karta hai** (price tamper nahi ho sakta). Unique Order ID (`DK-XXXXXXXX`) banta hai, status **PENDING**.
+3. Razorpay ki secure window khulti hai (UPI / Card / NetBanking).
+4. Payment ke baad backend **signature verify** karta hai (checkout response + Razorpay **webhook**). Sirf verified payment par status **PAID** hota hai. Fake/manual UTR ka koi option hi nahi hai.
+5. Sirf **PAID** hone par "Order on WhatsApp" button unlock hota hai. Fail/cancel par clear message + "Try payment again".
+6. COD option pehle jaisa chalta hai (WhatsApp me "PAYMENT PENDING").
+
+Status: `PENDING → PAID`, `PENDING → FAILED`, `FAILED → PAID` (retry). `PAID` final hai – kabhi downgrade nahi hota.
+Duplicate protection: same cart par double-click = same Order ID; webhook dobara aaye to ignore; ek order par 2 payments aaye to `extraPayments` me flag hota hai (manual refund ke liye).
+
+## Files
+- `index.html` – aapki website (design/products same, sirf payment flow badla)
+- `backend/worker.js` – Cloudflare Worker (free) – order, verify, webhook
+- `backend/wrangler.toml` – config
+
+## Setup (step by step)
+
+### 1) Razorpay account
+1. https://razorpay.com par account banao. Pehle **Test Mode** me kaam karo.
+2. Dashboard → Settings → API Keys → **Generate Key**. `Key ID` (rzp_test_...) aur `Key Secret` copy karo. **Secret kisi ko mat do, HTML me mat daalo.**
+3. Settings → Payment Capture → **Automatic capture** rakho.
+
+### 2) Backend deploy (Cloudflare Workers – free)
+```bash
+npm install -g wrangler
+wrangler login
+cd backend
+wrangler kv namespace create ORDERS      # output me id milegi -> wrangler.toml me paste karo
+```
+`wrangler.toml` me badlo: `ALLOWED_ORIGIN` (apna `https://USERNAME.github.io`), `RAZORPAY_KEY_ID`, aur KV `id`.
+
+Secrets set karo (ye sirf server par rehte hain):
+```bash
+wrangler secret put RAZORPAY_KEY_SECRET       # Razorpay Key Secret
+wrangler secret put RAZORPAY_WEBHOOK_SECRET   # koi lamba random text (step 3 me wahi daalna hai)
+wrangler secret put ADMIN_TOKEN               # optional: orders dekhne ke liye
+wrangler deploy
+```
+Deploy ke baad URL milega, jaise `https://dask-pay.yourname.workers.dev`.
+
+**Prices:** `backend/worker.js` ke upar `PRODUCTS` list me apne products ki real ₹ prices daalo (id wahi jo website me hain). Razorpay sirf INR leta hai. Website ke Edit store me bhi wahi price rakho, nahi to customer ko alag amount dikhega. Naya product add karo to worker.js me bhi add karke dobara `wrangler deploy` karo.
+
+### 3) Webhook set karo
+Razorpay Dashboard → Settings → Webhooks → Add:
+- URL: `https://dask-pay.yourname.workers.dev/webhook`
+- Secret: wahi jo `RAZORPAY_WEBHOOK_SECRET` me daala
+- Events: `payment.captured`, `order.paid`, `payment.failed`
+
+### 4) Frontend (GitHub Pages)
+1. `index.html` me ye line dhundo aur apna Worker URL daalo:
+   `const API_BASE="https://dask-pay.YOUR-SUBDOMAIN.workers.dev";`
+2. GitHub repo me `index.html` upload karo → Settings → Pages → Branch `main` / root → Save.
+3. (Existing website me merge karna ho to: `/* ===== Online payment ... */` wala block, `startOnline(d)` ki line checkout handler me, aur "Pay online" radio copy karo.)
+
+### 5) Test (Test Mode)
+- UPI: `success@razorpay` = success, `failure@razorpay` = fail
+- Card: `4111 1111 1111 1111`, koi bhi future expiry, CVV `123`
+- Success par "Payment verified – PAID" + WhatsApp button aana chahiye; fail par button nahi aana chahiye.
+
+### 6) Live jao
+Razorpay KYC complete karo → Live keys banao → `RAZORPAY_KEY_ID` (wrangler.toml) aur `RAZORPAY_KEY_SECRET` (secret) badlo → live webhook banao → `wrangler deploy`.
+
+## Sabke orders dekhna
+```bash
+curl -H "Authorization: Bearer <ADMIN_TOKEN>" https://dask-pay.yourname.workers.dev/admin/orders
+```
+Isme har order ka status, paymentId, customer details, aur `extraPayments` (duplicate payment) dikhta hai. Website ka Admin panel abhi bhi sirf usi browser ke orders dikhata hai.
+
+## Dhyan rakhne wali baatein
+- Free tier limits: Cloudflare Workers ~100k requests/din, KV ~1000 writes/din – chhoti dukaan ke liye kaafi.
+- Purane "UPI QR / UPI ID / UTR" fields ab payment me use nahi hote (Edit store me dikhte rahenge, ignore karo).
+- Razorpay ke charges (fee) lagte hain; free sirf hosting hai.
+- Agar customer payment ke beech page reload kar de, to wo dubara pay karne se pehle `Order ID` ke saath store se confirm kare; server par status verify hota rehta hai.
+</script>
 <script>
 const DEFAULT_PRODUCTS=[
  {id:1,name:"Heavyweight tee",cat:"Tops",price:28,color:"#3b5bdb"},
@@ -144,18 +442,39 @@ const DEFAULT_PRODUCTS=[
  {id:10,name:"Canvas tote",cat:"Accessories",price:26,color:"#1971c2"}
 ];
 const SIZES=["XS","S","M","L","XL"];
-const DEF={brand:"Dask Everyday Clothing",headline:"Clothes you'll wear on repeat.",sub:"Soft basics in five colors, sized XS to XL. Free returns within 30 days.",accent:"#f2b632",logo:"",cur:"$",wa:"",upi:"",upiNo:"",qr:"",qrData:"",bg:"",bgo:55};
+const DEF={brand:"Dask Everyday Clothing",headline:"Clothes you'll wear on repeat.",sub:"Soft basics in five colors, sized XS to XL. Free returns within 30 days.",accent:"#f2b632",logo:"",cur:"$",wa:"",upi:"",upiNo:"",qr:"",qrData:"",bg:"",bgo:55,phone:"8651260835",email:"sumitdas6483@gmail.com",font:"Bricolage Grotesque",fs:16,hs:100,tc:"",hc:"",sf:"",sz:0,sc:"",cf:"",cz:0,cc:""};
 let S={...DEF},PRODUCTS=JSON.parse(JSON.stringify(DEFAULT_PRODUCTS));
 const LG=k=>{try{return localStorage.getItem("dask-"+k)??localStorage.getItem("hemline-"+k)}catch(e){return null}};
 try{const d=JSON.parse(LG("store")||"null");if(d){S={...DEF,...d.S};if(!S.brand||/^hemline$/i.test(S.brand.trim()))S.brand=DEF.brand;if(Array.isArray(d.P))PRODUCTS=d.P}}catch(e){}
 let dirty=false;
 function saveStore(){try{const j=JSON.stringify({S,P:PRODUCTS});localStorage.setItem("dask-store",j);return localStorage.getItem("dask-store")===j}catch(e){return false}}
+const MIN_PH=3,MAX_PH=10;
+const imgsOf=p=>Array.isArray(p.imgs)&&p.imgs.length?p.imgs:(p.img?[p.img]:[]);
+function setImgs(p,a){delete p.img;if(a.length)p.imgs=a;else delete p.imgs}
+const readPhoto=f=>new Promise((ok,no)=>{const fr=new FileReader();fr.onerror=no;fr.onload=()=>{const im=new Image();im.onerror=no;im.onload=()=>{
+  const m=Math.min(1,560/Math.max(im.width,im.height)),w=Math.round(im.width*m),h=Math.round(im.height*m),c=document.createElement("canvas");
+  c.width=w;c.height=h;c.getContext("2d").drawImage(im,0,0,w,h);ok(c.toDataURL("image/jpeg",0.72))};im.src=fr.result};fr.readAsDataURL(f)});
+function tileHTML(p){
+  const im=imgsOf(p),d=dpc(p)>0?`<span class="dbadge">${Math.round(dpc(p)*10)/10}% OFF</span>`:"";
+  if(!im.length)return `<div class="tile" style="background:${esc(p.color)}">${esc(p.cat)}${d}</div>`;
+  const nav=im.length>1?`<button type="button" class="gnav gprev" data-gid="${p.id}" data-gd="-1" aria-label="Previous photo">‹</button><button type="button" class="gnav gnext" data-gid="${p.id}" data-gd="1" aria-label="Next photo">›</button><span class="gcount" id="gc${p.id}" aria-live="polite">1/${im.length}</span>`:"";
+  return `<div class="tile" style="background:#ddd"><div class="gal" data-gal="${p.id}" role="group" aria-label="${esc(p.name)} photos" tabindex="0">${im.map((u,k)=>`<img src="${esc(u)}" alt="${esc(p.name)} – photo ${k+1} of ${im.length}" loading="lazy" draggable="false">`).join("")}</div>${d}${nav}</div>`;
+}
+function photoEd(p,i){
+  const im=imgsOf(p),n=im.length,low=n>0&&n<MIN_PH;
+  const hint=n===0?`Add ${MIN_PH} to ${MAX_PH} photos (or leave empty to show the tile color)`:low?`Add ${MIN_PH-n} more – minimum ${MIN_PH} photos required`:`First photo is the cover · max ${MAX_PH}`;
+  return `<div class="pph pgrid"><div class="phead"><strong>Photos ${n}/${MAX_PH}</strong><small class="${low?"warn":""}">${hint}</small></div>`+
+  `<div class="thumbs">${im.map((u,k)=>`<div class="th"><img src="${esc(u)}" alt="Photo ${k+1}" class="pthumb">${k===0?'<span class="cov">Cover</span>':`<button type="button" class="thb mk" data-mk="${i}:${k}" aria-label="Make photo ${k+1} the cover">★</button>`}<button type="button" class="thb rm" data-rm="${i}:${k}" aria-label="Remove photo ${k+1}">×</button></div>`).join("")}</div>`+
+  `<div class="hbtns"><button type="button" class="chip" data-pick="${i}"${n>=MAX_PH?" disabled":""}>${n?"Add more photos":"Upload photos"}</button></div>`+
+  `<input type="file" accept="image/*" multiple class="vh" data-file="${i}" aria-label="Product photos (select ${MIN_PH} to ${MAX_PH})"></div>`;
+}
 function markDirty(){dirty=true;const b=$("savebtn");if(b){b.textContent="Save changes";b.disabled=false}const m=$("savemsg");if(m)m.textContent="Unsaved changes"}
 window.addEventListener("beforeunload",e=>{if(dirty){e.preventDefault();e.returnValue=""}});
 let cart=[],cat="All";
 try{cart=JSON.parse(LG("cart")||"[]")}catch(e){cart=[]}
 const $=id=>document.getElementById(id);
 const money=n=>(S.cur||"")+n.toFixed(2);
+const dpc=p=>Math.min(90,Math.max(0,+p.disc||0)),eff=p=>Math.round(p.price*(100-dpc(p)))/100;
 function save(){try{localStorage.setItem("dask-cart",JSON.stringify(cart))}catch(e){}}
 
 function renderFilters(){
@@ -167,29 +486,34 @@ function renderFilters(){
 function renderGrid(){
   $("grid").innerHTML=PRODUCTS.filter(p=>cat==="All"||p.cat===cat).map(p=>`
   <article class="card">
-    <div class="tile" style="background:${p.img?`#ddd url(${esc(p.img)}) center/cover no-repeat`:esc(p.color)}"${p.img?` role="img" aria-label="${esc(p.name)}"`:""}>${p.img?"":esc(p.cat)}</div>
-    <div class="info"><h3>${p.name}</h3><span class="price">${money(p.price)}</span>
-      <div class="row"><div><select aria-label="Size for ${p.name}" id="s${p.id}">${SIZES.map(s=>`<option ${s==="M"?"selected":""}>${s}</option>`).join("")}</select>
+    ${tileHTML(p)}
+    <div class="info"><h3>${p.name}</h3>${dpc(p)>0?`<span class="price"><strong>${money(eff(p))}</strong><s class="was">${money(p.price)}</s></span>`:`<span class="price">${money(p.price)}</span>`}
+      <div class="row"><div class="sel"><select aria-label="Size for ${p.name}" id="s${p.id}">${SIZES.map(s=>`<option ${s==="M"?"selected":""}>${s}</option>`).join("")}</select>
+      <div class="qs" role="group" aria-label="Quantity for ${p.name}"><button type="button" data-id="${p.id}" data-d="-1" aria-label="Decrease quantity">−</button><span id="q${p.id}" aria-live="polite">1</span><button type="button" data-id="${p.id}" data-d="1" aria-label="Increase quantity">+</button></div>
       </div><div class="btns"><button class="add" data-id="${p.id}">Add to cart</button><button class="buy" data-id="${p.id}">Buy now</button></div></div></div>
   </article>`).join("");
-  $("grid").querySelectorAll(".add").forEach(b=>b.onclick=()=>add(+b.dataset.id,$("s"+b.dataset.id).value));
-  $("grid").querySelectorAll(".buy").forEach(b=>b.onclick=()=>add(+b.dataset.id,$("s"+b.dataset.id).value,true));
+  const gq=id=>Math.max(1,parseInt($("q"+id).textContent)||1);
+  $("grid").querySelectorAll(".qs button").forEach(b=>b.onclick=()=>{const s=$("q"+b.dataset.id);s.textContent=Math.min(99,Math.max(1,gq(b.dataset.id)+(+b.dataset.d)))});
+  $("grid").querySelectorAll(".add").forEach(b=>b.onclick=()=>add(+b.dataset.id,$("s"+b.dataset.id).value,false,gq(b.dataset.id)));
+  $("grid").querySelectorAll(".buy").forEach(b=>b.onclick=()=>add(+b.dataset.id,$("s"+b.dataset.id).value,true,gq(b.dataset.id)));
+  $("grid").querySelectorAll(".gal").forEach(g=>{const c=$("gc"+g.dataset.gal);if(!c)return;g.addEventListener("scroll",()=>{const n=g.children.length,i=Math.round(g.scrollLeft/(g.clientWidth||1))+1;c.textContent=Math.min(n,Math.max(1,i))+"/"+n},{passive:true})});
+  $("grid").querySelectorAll(".gnav").forEach(b=>b.onclick=()=>{const g=$("grid").querySelector(`.gal[data-gal="${b.dataset.gid}"]`);if(g)g.scrollBy({left:(+b.dataset.gd)*g.clientWidth,behavior:"smooth"})});
 }
-function add(id,size,buy){
+function add(id,size,buy,n=1){
   const l=cart.find(i=>i.id===id&&i.size===size);
-  l?l.q++:cart.push({id,size,q:1});
+  l?l.q=Math.min(99,l.q+n):cart.push({id,size,q:n});
   save();renderCart();openCart();
   if(buy)checkout();
 }
 function change(i,d){cart[i].q+=d;if(cart[i].q<1)cart.splice(i,1);save();renderCart()}
-function totals(){return cart.reduce((s,l)=>s+PRODUCTS.find(p=>p.id===l.id).price*l.q,0)}
+function totals(){return cart.reduce((s,l)=>s+eff(PRODUCTS.find(p=>p.id===l.id))*l.q,0)}
 function renderCart(){
   cart=cart.filter(l=>PRODUCTS.some(p=>p.id===l.id));
   $("count").textContent=cart.reduce((s,l)=>s+l.q,0);
   $("ctitle").textContent="Your cart";
   if(!cart.length){$("items").innerHTML='<p class="empty">Your cart is empty. Pick a size and tap Add.</p>';$("foot").innerHTML="";return}
   $("items").innerHTML=cart.map((l,i)=>{const p=PRODUCTS.find(x=>x.id===l.id);return `
-  <div class="item"><div>${p.name}<br><small>Size ${l.size} · ${money(p.price)}</small></div>
+  <div class="item"><div>${p.name}<br><small>Size ${l.size} · ${money(eff(p))}${dpc(p)>0?` <s>${money(p.price)}</s> (${Math.round(dpc(p)*10)/10}% off)`:""}</small></div>
   <div class="qty"><button data-i="${i}" data-d="-1" aria-label="Remove one">−</button>${l.q}<button data-i="${i}" data-d="1" aria-label="Add one">+</button></div></div>`}).join("");
   $("items").querySelectorAll(".qty button").forEach(b=>b.onclick=()=>change(+b.dataset.i,+b.dataset.d));
   $("foot").innerHTML=`<div class="total"><span>Total</span><span>${money(totals())}</span></div><button class="primary" id="go">Checkout</button>`;
@@ -214,55 +538,6 @@ function upiInfoHtml(){
    +(S.upiNo?`<div>UPI number: <strong>${esc(S.upiNo)}</strong></div>`:"")
    +(S.upi?`<div>UPI ID: <strong>${esc(S.upi)}</strong></div>`:"");
 }
-/* ===== Online payment (Razorpay + your backend). PAID only after server verification ===== */
-const API_BASE="https://dask-pay.YOUR-SUBDOMAIN.workers.dev"; /* <-- apna Cloudflare Worker URL yahan daalo */
-const API_READY=!/YOUR-SUBDOMAIN/.test(API_BASE);
-const rnd=()=>(window.crypto&&crypto.randomUUID)?crypto.randomUUID():Date.now()+"-"+Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2);
-function idemFor(sig){let x=null;try{x=JSON.parse(sessionStorage.getItem("dask-idem")||"null")}catch(e){}if(!x||x.sig!==sig){x={sig,k:rnd()};try{sessionStorage.setItem("dask-idem",JSON.stringify(x))}catch(e){}}return x.k}
-async function api(path,opt){const r=await fetch(API_BASE+path,opt);const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error||"Request failed ("+r.status+")");return j}
-const jpost=(path,b)=>api(path,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(b)});
-const loadRzp=()=>new Promise((ok,no)=>{if(window.Razorpay)return ok();const t=document.createElement("script");t.src="https://checkout.razorpay.com/v1/checkout.js";t.onload=ok;t.onerror=()=>no(new Error("Couldn't load the payment window. Check your internet."));document.head.appendChild(t)});
-let ONL=null;
-function pscreen(title,html,foot){$("ctitle").textContent=title;$("items").innerHTML=html;$("foot").innerHTML=foot||"";openCart()}
-const pwait=(t,m)=>pscreen(t,`<p><strong>${esc(t)}</strong></p><p class="empty">${esc(m)}</p>`,"");
-function pfail(t,m){pscreen("Payment not completed",`<p><strong>${esc(t)}</strong></p><p>${esc(m)}</p><p class="empty">Order ID: ${esc(ONL.o.orderId)} · Status: NOT PAID</p>`,`<button class="primary" id="retry">Try payment again</button>`);$("retry").onclick=openRzp}
-async function startOnline(d){
-  const btn=$("pay"),box=$("upiinfo"),err=m=>{box.hidden=false;box.textContent=m;btn.disabled=false};
-  if(!API_READY)return err("Online payment is not set up yet. Please choose Cash on Delivery or contact the store.");
-  btn.disabled=true;
-  try{
-    const o=await jpost("/create-order",{idem:idemFor(JSON.stringify([cart,d.mobile,d.address,d.pin])),items:cart.map(l=>({id:l.id,size:l.size,q:l.q})),customer:{name:d.name,mobile:d.mobile,address:d.address,pin:d.pin,city:d.city}});
-    ONL={o,d,lines:cart.map(l=>{const p=PRODUCTS.find(x=>x.id===l.id);return `${p.name} (${l.size}) x${l.q}`}),done:false,paying:false};
-    if(o.status==="PAID")return onPaid(o.paymentId);
-    await loadRzp();openRzp();
-  }catch(e){err("Couldn't start payment: "+e.message)}
-}
-function openRzp(){
-  const {o,d}=ONL;ONL.paying=false;
-  pwait("Waiting for payment…","Complete the payment in the secure Razorpay window.");
-  new Razorpay({key:o.keyId,amount:o.amount,currency:o.currency,order_id:o.rzpOrderId,name:S.brand,description:"Order "+o.orderId,prefill:{name:d.name,contact:d.mobile},theme:{color:S.accent},
-    handler:async r=>{ONL.paying=true;pwait("Verifying payment…","Please don't close this page.");try{await jpost("/verify",{orderId:o.orderId,...r})}catch(e){}poll(0)},
-    modal:{ondismiss:()=>{if(!ONL.paying&&!ONL.done)pfail("Payment not completed","The payment window was closed. If any amount was deducted, it will be confirmed automatically or refunded by your bank.")}}}).open();
-}
-async function poll(n){
-  if(!ONL||ONL.done)return;
-  try{const s=await api("/status?id="+encodeURIComponent(ONL.o.orderId));
-    if(s.status==="PAID")return onPaid(s.paymentId);
-    if(s.status==="FAILED"&&n>=2)return pfail("Payment failed","Your bank or UPI app declined the payment. This order is NOT paid.");
-  }catch(e){}
-  if(n>=40){pscreen("Verification pending",`<p>We haven't received the payment confirmation yet. <strong>If money was deducted, please don't pay again</strong> – it will be confirmed automatically, or refunded by your bank.</p><p class="empty">Order ID: ${esc(ONL.o.orderId)}</p>`,`<button class="primary" id="chk">Check again</button>`);$("chk").onclick=()=>{pwait("Checking…","Please wait.");poll(0)};return}
-  setTimeout(()=>poll(n+1),3000);
-}
-function onPaid(pid){
-  if(ONL.done)return;ONL.done=true;
-  const {o,d,lines}=ONL,amt=o.amount/100,tot="₹"+amt.toFixed(2),wa=(S.wa||"").replace(/\D/g,"");
-  try{const a=JSON.parse(LG("orders")||"[]");if(!a.some(x=>x.ref===o.orderId)){a.unshift({ref:o.orderId,date:new Date().toISOString(),lines,total:tot,amt,status:"sold",pay:"ONLINE",payStatus:"paid",payId:pid||"",...d});localStorage.setItem("dask-orders",JSON.stringify(a.slice(0,500)))}}catch(e){}
-  cart=[];save();try{sessionStorage.removeItem("dask-idem")}catch(e){}
-  $("count").textContent="0";
-  const msg=`New order ${o.orderId}\n${lines.join("\n")}\nTotal: ${tot}\n\nName: ${d.name}\nMobile: ${d.mobile}\nAddress: ${d.address}\nPIN: ${d.pin}\nCity/State: ${d.city}\nPayment: PAID (Online, verified)${pid?" – Payment ID: "+pid:""}`;
-  pscreen("Payment successful",`<p>✅ Payment verified! Your order <strong>${esc(o.orderId)}</strong> is <strong>PAID</strong>.</p>`+(wa?`<p>Tap below to send your order details to the store.</p><a class="primary" target="_blank" rel="noopener" href="https://wa.me/${wa}?text=${encodeURIComponent(msg)}">Order on WhatsApp</a>`:`<p>The store hasn't added a WhatsApp number yet.</p>`),`<button class="primary" id="done">Keep shopping</button>`);
-  $("done").onclick=()=>{closeCart();renderCart()};
-}
 function checkout(){
   let c={};try{c=JSON.parse(LG("customer")||"{}")}catch(e){}
   $("ctitle").textContent="Checkout";
@@ -273,19 +548,18 @@ function checkout(){
    <label>PIN code<input name="pin" required inputmode="numeric" maxlength="6" pattern="[0-9]{6}" title="Enter a 6-digit PIN code" autocomplete="postal-code" placeholder="6-digit PIN" value="${esc(c.pin||"")}"></label>
    <label>City / State<input name="city" required autocomplete="address-level2" placeholder="e.g. Jaipur, Rajasthan" value="${esc(c.city||"")}"></label>
    <fieldset class="payf"><legend>Payment method</legend>
-    <label class="radio"><input type="radio" name="pay" value="COD" ${c.pay==="ONLINE"?"":"checked"}> Cash on Delivery (COD)</label>
-    <label class="radio"><input type="radio" name="pay" value="ONLINE" ${c.pay==="ONLINE"?"checked":""}> Pay online (UPI / Card / NetBanking)</label></fieldset><div class="upibox" id="upiinfo" hidden></div></form>`;
+    <label class="radio"><input type="radio" name="pay" value="COD" ${c.pay==="UPI"?"":"checked"}> Cash on Delivery (COD)</label>
+    <label class="radio"><input type="radio" name="pay" value="UPI" ${c.pay==="UPI"?"checked":""}> UPI – GPay / PhonePe / Paytm (QR)</label></fieldset><div class="upibox" id="upiinfo" hidden></div></form>`;
   $("f").onsubmit=e=>e.preventDefault();
-  const updUpi=()=>{const on=$("f").pay.value==="ONLINE",b=$("upiinfo");b.hidden=!on;b.textContent=on?"Secure online payment via Razorpay (UPI, cards, netbanking). Your order is marked PAID and the WhatsApp button unlocks only after the payment is verified by our server.":""};
+  const updUpi=()=>{const v=$("f").pay.value,b=$("upiinfo");b.hidden=v==="COD";b.textContent=v==="UPI"?"After you tap Place order, you will get a QR code and a button that opens GPay / PhonePe / Paytm with the amount already filled in.":""};
   $("f").querySelectorAll('input[name="pay"]').forEach(r=>r.onchange=updUpi);updUpi();
   $("foot").innerHTML=`<div class="total"><span>Total</span><span>${money(totals())}</span></div><button class="primary" id="pay">Place order</button>`;
   $("pay").onclick=()=>{const f=$("f");if(!f.reportValidity())return;
     const d=Object.fromEntries(new FormData(f));
-    if(d.pay==="ONLINE"){startOnline(d);return}
     const ref="DK-"+Math.floor(100000+Math.random()*900000);
-    const lines=cart.map(l=>{const p=PRODUCTS.find(x=>x.id===l.id);return `${p.name} (${l.size}) x${l.q} = ${money(p.price*l.q)}`});
+    const lines=cart.map(l=>{const p=PRODUCTS.find(x=>x.id===l.id);return `${p.name} (${l.size}) x${l.q} = ${money(eff(p)*l.q)}`});
     const total=totals();
-    const order={ref,date:new Date().toISOString(),lines,total:money(total),amt:total,status:"sold",payStatus:"pending",...d};
+    const order={ref,date:new Date().toISOString(),lines,total:money(total),amt:total,status:"pending",payStatus:"pending",...d};
     try{localStorage.setItem("dask-customer",JSON.stringify(d));
       const o=JSON.parse(LG("orders")||"[]");o.unshift(order);
       localStorage.setItem("dask-orders",JSON.stringify(o.slice(0,500)))}catch(e){}
@@ -301,7 +575,32 @@ function checkout(){
       if(wa)window.open(waLink(pl),"_blank");
       return;
     }
+    showUpiPay(order,total,wa,buildMsg,setPay);
   };
+}
+function showUpiPay(order,total,wa,buildMsg,setPay){
+  const ref=order.ref,link=buildUpiLink(total,ref);
+  const confirmPaid=()=>{
+    const ui=$("utr"),utr=ui?(ui.value||"").trim():"";setPay("pending",utr);
+    const pl="UPI – customer says PAID, NOT VERIFIED yet"+(utr?" – UTR: "+utr:"");
+    const wl="https://wa.me/"+wa+"?text="+encodeURIComponent(buildMsg(pl));
+    $("ctitle").textContent="Order placed";
+    $("items").innerHTML=`<p>Thanks! Order <strong>${esc(ref)}</strong> is placed.</p><p>Payment: UPI – <strong>awaiting confirmation</strong> by the store.</p>`+(wa?`<p>Tap below to send your order details to the store.</p><a class="primary" target="_blank" rel="noopener" href="${esc(wl)}">Send order on WhatsApp</a>`:`<p>The store hasn't added a WhatsApp number yet, so this order is saved only on this device.</p>`);
+    $("foot").innerHTML=`<button class="primary" id="done">Keep shopping</button>`;$("done").onclick=()=>{closeCart();renderCart()};
+    if(wa)window.open(wl,"_blank");
+  };
+  const totalRow=`<div class="total"><span>Total</span><span>${money(total)}</span></div><button class="primary" id="paid">I have paid – confirm order</button>`;
+  if(link){
+    $("ctitle").textContent="Complete payment";
+    $("items").innerHTML=`<p>Order <strong>${esc(ref)}</strong> · Pay <strong>${money(total)}</strong></p><p class="empty" style="padding:0 0 8px">Your payment app is opening with the amount filled in. Pay there, then come back and tap “I have paid”.</p><a class="primary" href="${esc(link)}">Open payment app again</a>`;
+    $("foot").innerHTML=totalRow;$("paid").onclick=confirmPaid;
+    window.location.href=link;
+    return;
+  }
+  $("ctitle").textContent="Pay with UPI";
+  const qr=S.qr?`<img src="${esc(S.qr)}" alt="UPI QR code" style="width:100%;max-width:240px;display:block;margin:0 auto 10px;border-radius:8px;background:#fff">`:"";
+  $("items").innerHTML=`<p>Order <strong>${esc(ref)}</strong> · Pay <strong>${money(total)}</strong></p><p class="empty" style="padding:0 0 8px">The store hasn't added a UPI ID yet, so the app can't open automatically. Scan this QR and type the amount yourself, or go back and choose Cash on Delivery.</p>${qr}`+(S.upiNo?`<div>UPI number: <strong>${esc(S.upiNo)}</strong></div>`:"");
+  $("foot").innerHTML=totalRow;$("paid").onclick=confirmPaid;
 }
 function openCart(){$("cart").classList.add("open");$("cart").setAttribute("aria-hidden","false");$("scrim").classList.add("on")}
 function closeCart(){unlocked=false;adminOk=false;$("editor").classList.remove("open");$("editor").setAttribute("aria-hidden","true");$("cart").classList.remove("open");$("cart").setAttribute("aria-hidden","true");$("scrim").classList.remove("on")}
@@ -309,10 +608,36 @@ $("open").onclick=()=>{renderCart();openCart()};
 $("close").onclick=$("scrim").onclick=closeCart;
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeCart()});
 const esc=t=>String(t).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
-function applySettings(){const bi=$("bgimg");bi.style.backgroundImage=S.bg?`url("${S.bg}")`:"none";document.documentElement.classList.toggle("hasbg",!!S.bg);document.documentElement.style.setProperty("--bgo",(S.bgo==null?55:S.bgo)/100);$("logo").innerHTML=(S.logo?`<img src="${esc(S.logo)}" alt="">`:`<span class="mark" aria-hidden="true">${esc((S.brand||"D").trim().charAt(0).toUpperCase())}</span>`)+`<span>${esc(S.brand)}</span>`;document.title=S.brand+" – Soft Basics, Tees, Hoodies & Jeans";$("h1").textContent=S.headline;$("sub").textContent=S.sub;document.documentElement.style.setProperty("--accent",S.accent)}
+function applySettings(){const bi=$("bgimg");bi.style.backgroundImage=S.bg?`url("${S.bg}")`:"none";document.documentElement.classList.toggle("hasbg",!!S.bg);document.documentElement.style.setProperty("--bgo",(S.bgo==null?55:S.bgo)/100);$("logo").innerHTML=(S.logo?`<img src="${esc(S.logo)}" alt="">`:`<span class="mark" aria-hidden="true">${esc((S.brand||"D").trim().charAt(0).toUpperCase())}</span>`)+`<span>${esc(S.brand)}</span>`;document.title=S.brand+" – Soft Basics, Tees, Hoodies & Jeans";$("h1").textContent=S.headline;$("sub").textContent=S.sub;document.documentElement.style.setProperty("--accent",S.accent);applyType();renderFooter()}
+const FONTS=["Bricolage Grotesque","Poppins","Montserrat","Roboto","Playfair Display","Lora","Arial","Georgia","Courier New"],SYS=["Arial","Georgia","Courier New"];
+function loadFont(f){const id="gf-"+f.replace(/\s/g,"");if(SYS.includes(f)||document.getElementById(id))return;const l=document.createElement("link");l.id=id;l.rel="stylesheet";l.href="https://fonts.googleapis.com/css2?family="+encodeURIComponent(f).replace(/%20/g,"+")+":wght@400;700&display=swap";document.head.appendChild(l)}
+function applyType(){
+  const r=document.documentElement,f=S.font||DEF.font;loadFont(f);
+  document.body.style.fontFamily=`"${f}",system-ui,-apple-system,Segoe UI,sans-serif`;
+  r.style.setProperty("--fs",+S.fs||16);r.style.setProperty("--hs",(+S.hs||100)/100);
+  S.tc?r.style.setProperty("--tx",S.tc):r.style.removeProperty("--tx");
+  S.hc?r.style.setProperty("--hc",S.hc):r.style.removeProperty("--hc");
+  const set=(n,v)=>v?r.style.setProperty(n,v):r.style.removeProperty(n);
+  const fam=x=>{if(!x)return "";loadFont(x);return `"${x}",system-ui,-apple-system,Segoe UI,sans-serif`};
+  set("--sf",fam(S.sf));set("--sz",+S.sz?S.sz+"px":"");set("--sc",S.sc);
+  set("--cf",fam(S.cf));set("--cz",+S.cz?S.cz+"px":"");set("--cc",S.cc);
+}
+function typeBlock(title,f,z,c){
+  return `<h3>${title}</h3>
+  <label>Font style<select id="e-${f}"><option value=""${S[f]?"":" selected"}>Same as website font</option>${FONTS.map(x=>`<option${x===S[f]?" selected":""}>${x}</option>`).join("")}</select></label>
+  <label>Text size <span id="o-${z}">${+S[z]?S[z]+"px":"default"}</span><input type="range" id="e-${z}" min="10" max="28" step="1" value="${+S[z]||16}"></label>
+  <label>Text color<input type="color" id="e-${c}" value="${S[c]||"#5d6784"}"></label>
+  <div class="hbtns"><button class="chip" type="button" id="rst-${f}">Reset ${title.toLowerCase()}</button></div>`;
+}
+function renderFooter(){
+  const ph=(S.phone||"").replace(/\D/g,""),num=ph.length===10?"91"+ph:ph,em=(S.email||"").trim();
+  const L=[];
+  if(ph)L.push(`Call/WhatsApp: <a href="tel:+${num}" style="color:inherit">${esc(S.phone)}</a> · <a href="https://wa.me/${num}" target="_blank" rel="noopener" style="color:inherit">Chat on WhatsApp</a>`);
+  if(em)L.push(`E-mail: <a href="mailto:${esc(em)}" style="color:inherit">${esc(em)}</a>`);
+  $("sitefoot").innerHTML=`<div>© ${esc(S.brand)}</div>`+L.map(x=>`<div>${x}</div>`).join("");
+}
 function refresh(){markDirty();applySettings();renderFilters();renderGrid();renderCart()}
 function renderEditor(){
-  let orders=[];try{orders=JSON.parse(LG("orders")||"[]")}catch(e){}
   $("ebody").innerHTML=`
   <div class="savebar"><button class="chip" id="back" type="button">← Admin</button><button class="primary" id="savebtn">Save changes</button><button class="chip" id="bkp">Backup</button><button class="chip" id="rst">Restore</button><input type="file" id="rfile" accept=".json,application/json" class="vh" aria-label="Restore backup file"><small id="savemsg" role="status">${dirty?"Unsaved changes":"All changes saved"}</small></div>
   <div class="logoup"><span>Logo image</span><button type="button" class="add" id="pick">Choose photo from gallery or files</button><input type="file" id="e-logo" accept="image/*" class="vh" aria-label="Logo image file"><small id="logomsg" role="status"></small></div>
@@ -325,6 +650,19 @@ function renderEditor(){
   <label>Subtext<input id="e-sub" value="${esc(S.sub)}"></label>
   <label>Button color<input type="color" id="e-acc" value="${S.accent}"></label>
   <label>Currency symbol<input id="e-cur" maxlength="3" value="${esc(S.cur)}"></label>
+  <h3>Font &amp; colors</h3>
+  <label>Font style<select id="e-font">${FONTS.map(f=>`<option${f===(S.font||DEF.font)?" selected":""}>${f}</option>`).join("")}</select></label>
+  <label>Text size <span id="o-fs">${+S.fs||16}px</span><input type="range" id="e-fs" min="14" max="20" step="1" value="${+S.fs||16}"></label>
+  <label>Headline size <span id="o-hs">${+S.hs||100}%</span><input type="range" id="e-hs" min="60" max="140" step="10" value="${+S.hs||100}"></label>
+  <label>Text color<input type="color" id="e-tc" value="${S.tc||"#1f2a44"}"></label>
+  <label>Headline color<input type="color" id="e-hc" value="${S.hc||"#1f2a44"}"></label>
+  <div class="hbtns" style="flex-wrap:wrap"><button class="chip" type="button" id="rst-type">Reset font &amp; colors</button></div>
+  <small style="color:var(--muted)">${S.tc||S.hc?"Custom colors are on. In dark mode, pick a light color so text stays readable.":"Colors follow the default theme."}</small>
+  ${typeBlock("Subtext style","sf","sz","sc")}
+  <h3>Contact details (shown at bottom of the website)</h3>
+  <label>Phone number (Call/WhatsApp)<input id="e-phone" type="tel" inputmode="numeric" value="${esc(S.phone||"")}"></label>
+  <label>E-mail<input id="e-email" type="email" autocapitalize="none" spellcheck="false" value="${esc(S.email||"")}"></label>
+  ${typeBlock("Contact style","cf","cz","cc")}
   <h3>UPI payment</h3>
   <div class="logoup"><span>UPI QR code image</span>${S.qr?`<img src="${esc(S.qr)}" alt="QR code preview" style="width:110px;height:110px;object-fit:contain;background:#fff;border-radius:8px;border:1px solid var(--line)">`:""}<button type="button" class="add" id="pickqr">${S.qr?"Change QR code":"Upload QR code"}</button><input type="file" id="e-qr" accept="image/*" class="vh" aria-label="QR code image file"><small id="qrmsg" role="status"></small></div>
   ${S.qr?'<button class="chip" id="rmqr">Remove QR code</button>':''}
@@ -332,27 +670,41 @@ function renderEditor(){
   <label>UPI ID (e.g. name@bank)<input id="e-upi" value="${esc(S.upi||"")}" autocapitalize="none" spellcheck="false"></label>
   <label>WhatsApp number for orders (with country code, e.g. 919876543210)<input id="e-wa" type="tel" inputmode="numeric" value="${esc(S.wa)}"></label>
   <h3>Products</h3>
-  ${PRODUCTS.map((p,i)=>`<div class="pe"><input data-i="${i}" data-k="name" value="${esc(p.name)}" aria-label="Product name"><input data-i="${i}" data-k="cat" value="${esc(p.cat)}" aria-label="Category"><input data-i="${i}" data-k="price" type="number" min="0" step="0.01" value="${p.price}" aria-label="Price"><input data-i="${i}" data-k="color" type="color" value="${p.color}" aria-label="Tile color (used when no photo)" title="Tile color (used when no photo)"><button class="x" data-del="${i}" aria-label="Delete product">🗑</button><div class="pph">${p.img?`<img src="${esc(p.img)}" alt="" class="pthumb">`:""}<button type="button" class="chip" data-pick="${i}">${p.img?"Change photo":"Upload photo"}</button>${p.img?`<button type="button" class="chip" data-rmimg="${i}">Remove photo</button>`:""}<input type="file" accept="image/*" class="vh" data-file="${i}" aria-label="Product photo file"></div></div>`).join("")}
-  <button class="primary" id="addp">Add product</button>
-  <h3>Saved orders</h3>
-  ${orders.length?orders.map(o=>`<div class="ord"><strong>${esc(o.ref)}</strong> · ${esc(o.total)}<br>${esc(o.name)}, ${esc(o.mobile)}<br><small>${esc(o.address)}, ${esc(o.city)} ${esc(o.pin)}</small><br><small>${o.lines.map(esc).join("; ")}</small></div>`).join(""):'<p class="empty">No orders saved on this device yet.</p>'}`;
+  <small style="color:var(--muted)">Each row: name, category, price, discount % (0 = no discount), tile color.</small>
+  ${PRODUCTS.map((p,i)=>`<div class="pe"><input data-i="${i}" data-k="name" value="${esc(p.name)}" aria-label="Product name"><input data-i="${i}" data-k="cat" value="${esc(p.cat)}" aria-label="Category"><input data-i="${i}" data-k="price" type="number" min="0" step="0.01" value="${p.price}" aria-label="Price"><input data-i="${i}" data-k="disc" type="number" min="0" max="90" step="1" value="${+p.disc||0}" aria-label="Discount percent" title="Discount %"><input data-i="${i}" data-k="color" type="color" value="${p.color}" aria-label="Tile color (used when no photo)" title="Tile color (used when no photo)"><button class="x" data-del="${i}" aria-label="Delete product">🗑</button>${photoEd(p,i)}</div>`).join("")}
+  <button class="primary" id="addp">Add product</button>`;
   $("back").onclick=renderAdminHome;
   const bind=(id,k)=>$(id).oninput=e=>{S[k]=e.target.value;refresh()};
-  bind("e-brand","brand");bind("e-head","headline");bind("e-sub","sub");bind("e-acc","accent");bind("e-cur","cur");bind("e-wa","wa");bind("e-upi","upi");bind("e-upino","upiNo");
+  bind("e-brand","brand");bind("e-head","headline");bind("e-sub","sub");bind("e-acc","accent");bind("e-cur","cur");bind("e-wa","wa");bind("e-phone","phone");bind("e-email","email");bind("e-font","font");
+  $("e-fs").oninput=e=>{S.fs=+e.target.value;$("o-fs").textContent=S.fs+"px";refresh()};
+  $("e-hs").oninput=e=>{S.hs=+e.target.value;$("o-hs").textContent=S.hs+"%";refresh()};
+  $("e-tc").oninput=e=>{S.tc=e.target.value;refresh()};
+  $("e-hc").oninput=e=>{S.hc=e.target.value;refresh()};
+  [["sf","sz","sc"],["cf","cz","cc"]].forEach(([f,z,c])=>{
+    $("e-"+f).oninput=e=>{S[f]=e.target.value;refresh()};
+    $("e-"+z).oninput=e=>{S[z]=+e.target.value;$("o-"+z).textContent=S[z]+"px";refresh()};
+    $("e-"+c).oninput=e=>{S[c]=e.target.value;refresh()};
+    $("rst-"+f).onclick=()=>{S[f]="";S[z]=0;S[c]="";refresh();renderEditor()};
+  });
+  $("rst-type").onclick=()=>{S.font=DEF.font;S.fs=DEF.fs;S.hs=DEF.hs;S.tc="";S.hc="";refresh();renderEditor()};bind("e-upi","upi");bind("e-upino","upiNo");
   $("ebody").querySelectorAll(".pe input[data-k]").forEach(inp=>inp.oninput=()=>{
     const p=PRODUCTS[+inp.dataset.i],k=inp.dataset.k;
-    p[k]=k==="price"?(parseFloat(inp.value)||0):inp.value;refresh()});
+    p[k]=k==="price"?(parseFloat(inp.value)||0):k==="disc"?Math.min(90,Math.max(0,parseFloat(inp.value)||0)):inp.value;refresh()});
   $("ebody").querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{PRODUCTS.splice(+b.dataset.del,1);refresh();renderEditor()});
   $("ebody").querySelectorAll("[data-pick]").forEach(b=>b.onclick=()=>$("ebody").querySelector(`[data-file="${b.dataset.pick}"]`).click());
-  $("ebody").querySelectorAll("[data-rmimg]").forEach(b=>b.onclick=()=>{delete PRODUCTS[+b.dataset.rmimg].img;refresh();renderEditor()});
-  $("ebody").querySelectorAll("[data-file]").forEach(inp=>inp.onchange=e=>{const f=e.target.files[0];if(!f)return;const p=PRODUCTS[+inp.dataset.file];
-    const bad=()=>{$("savemsg").textContent="Couldn't read this image. Try a JPG or PNG photo."};
-    const fr=new FileReader();fr.onerror=bad;
-    fr.onload=()=>{const im=new Image();im.onerror=bad;im.onload=()=>{
-      const m=Math.min(1,600/Math.max(im.width,im.height)),w=Math.round(im.width*m),h=Math.round(im.height*m),c=document.createElement("canvas");
-      c.width=w;c.height=h;c.getContext("2d").drawImage(im,0,0,w,h);
-      p.img=c.toDataURL("image/jpeg",0.8);refresh();renderEditor()};im.src=fr.result};
-    fr.readAsDataURL(f)});
+  $("ebody").querySelectorAll("[data-rm]").forEach(b=>b.onclick=()=>{const [i,k]=b.dataset.rm.split(":").map(Number),p=PRODUCTS[i],a=imgsOf(p).slice();a.splice(k,1);setImgs(p,a);refresh();renderEditor()});
+  $("ebody").querySelectorAll("[data-mk]").forEach(b=>b.onclick=()=>{const [i,k]=b.dataset.mk.split(":").map(Number),p=PRODUCTS[i],a=imgsOf(p).slice(),x=a.splice(k,1)[0];a.unshift(x);setImgs(p,a);refresh();renderEditor()});
+  $("ebody").querySelectorAll("[data-file]").forEach(inp=>inp.onchange=async e=>{
+    const files=[...e.target.files].filter(f=>/^image\//.test(f.type)||/\.(jpe?g|png|webp|gif|heic|heif)$/i.test(f.name));e.target.value="";
+    if(!files.length)return;
+    const p=PRODUCTS[+inp.dataset.file],cur=imgsOf(p).slice(),room=MAX_PH-cur.length,msg=t=>{const m=$("savemsg");if(m)m.textContent=t};
+    if(room<=0){msg("Maximum "+MAX_PH+" photos per product.");return}
+    const take=files.slice(0,room);let failed=0;msg("Adding photos…");
+    for(const f of take){try{cur.push(await readPhoto(f))}catch(x){failed++}}
+    setImgs(p,cur);refresh();renderEditor();
+    const n=[];if(files.length>take.length)n.push("only "+take.length+" added (max "+MAX_PH+" per product)");if(failed)n.push(failed+" couldn't be read – try JPG or PNG");if(cur.length>0&&cur.length<MIN_PH)n.push("add at least "+MIN_PH+" photos");
+    if(n.length)msg(n.join(" · "));
+  });
   $("addp").onclick=()=>{PRODUCTS.push({id:Date.now(),name:"New product",cat:"Tops",price:30,color:"#3b5bdb"});refresh();renderEditor()};
   $("pickbg").onclick=()=>$("e-bg").click();
   $("e-bg").onchange=e=>{const f=e.target.files[0];if(!f)return;
@@ -387,7 +739,7 @@ function renderEditor(){
         $("qrmsg").textContent=S.qrData?"QR read ✓ — buyer's UPI app will open with this QR's details and the order total.":"Couldn't read UPI details from this image, so the UPI ID below will be used. Make sure the QR is clear and fully visible."})};im.src=fr.result};
     fr.readAsDataURL(f)};
   if($("rmqr"))$("rmqr").onclick=()=>{S.qr="";S.qrData="";refresh();renderEditor()};
-  $("savebtn").onclick=()=>{const ok=saveStore();dirty=!ok;$("savemsg").textContent=ok?"Saved ✓ — will stay after reload":"Couldn't save in this browser. Use Backup to keep a copy.";if(ok)$("savebtn").textContent="Saved ✓"};
+  $("savebtn").onclick=()=>{const low=PRODUCTS.filter(p=>{const n=imgsOf(p).length;return n>0&&n<MIN_PH});if(low.length){$("savemsg").textContent="Can't save: "+low.map(p=>p.name).join(", ")+" need at least "+MIN_PH+" photos (or remove their photos).";return}const ok=saveStore();dirty=!ok;$("savemsg").textContent=ok?"Saved ✓ — will stay after reload":"Couldn't save in this browser. Use Backup to keep a copy.";if(ok)$("savebtn").textContent="Saved ✓"};
   $("bkp").onclick=()=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify({S,P:PRODUCTS})],{type:"application/json"}));a.download="dask-backup.json";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
   $("rst").onclick=()=>$("rfile").click();
   $("rfile").onchange=e=>{const f=e.target.files[0];if(!f)return;const fr=new FileReader();fr.onload=()=>{try{const d=JSON.parse(fr.result);S={...DEF,...d.S};if(Array.isArray(d.P))PRODUCTS=d.P;refresh();renderEditor();$("savemsg").textContent="Backup loaded — tap Save changes"}catch(x){$("savemsg").textContent="Invalid backup file"}};fr.readAsText(f)};
@@ -406,43 +758,55 @@ function renderLock(title,label,key,onOk,back){
 const getOrders=()=>{try{return JSON.parse(LG("orders")||"[]")}catch(e){return[]}};
 const setOrders=o=>{try{localStorage.setItem("dask-orders",JSON.stringify(o));return true}catch(e){return false}};
 const oAmt=o=>o.amt!=null?o.amt:(parseFloat(String(o.total).replace(/[^0-9.]/g,""))||0);
-const oSt=o=>o.status||"sold";
+const oSt=o=>{const s=o.status||"pending";return s==="sold"?"pending":s};
 const sumA=a=>a.reduce((s,x)=>s+oAmt(x),0);
-const ST={sold:"Sold",returned:"Returned",cancelled:"Cancelled"};
+const ST={pending:"Pending",delivered:"Delivered",cancelled:"Cancelled",returned:"Returned"};
 let aview="home";
 function setPayStatus(ref){const o=getOrders(),x=o.find(i=>i.ref===ref);if(x){x.payStatus="paid";setOrders(o)}renderAdmin(aview)}
 function setStatus(ref,status){const o=getOrders(),x=o.find(i=>i.ref===ref);if(x){x.status=status;setOrders(o)}renderAdmin(aview)}
-function renderAdmin(v){aview=v;({home:renderAdminHome,dash:renderDash,sold:()=>renderOrders("sold"),returned:()=>renderOrders("returned"),cancelled:()=>renderOrders("cancelled")})[v]()}
+function renderAdmin(v){aview=v;({home:renderAdminHome,dash:renderDash,orders:renderSaved,sold:()=>renderOrders("sold"),returned:()=>renderOrders("returned"),cancelled:()=>renderOrders("cancelled")})[v]()}
 const aBack='<button class="chip" id="aback" type="button">← Admin</button>';
 const bindBack=()=>{$("aback").onclick=renderAdminHome;};
 function renderAdminHome(){
   aview="home";$("etitle").textContent="Admin";
-  const items=[["dash","Dashboard"],["sold","Net sales"],["returned","Net return"],["cancelled","Net cancel"],["edit","Edit store"]];
+  const items=[["dash","Dashboard"],["orders","Saved orders"],["sold","Net sales"],["returned","Net return"],["cancelled","Net cancel"],["edit","Edit store"],["files","Backend files"]];
   $("ebody").innerHTML=`<div class="amenu">${items.map((it,i)=>`<button class="aopt" type="button" data-v="${it[0]}"><span class="num">${i+1}</span><span>${it[1]}</span></button>`).join("")}</div>`;
-  $("ebody").querySelectorAll(".aopt").forEach(b=>b.onclick=()=>b.dataset.v==="edit"?openEditStore():renderAdmin(b.dataset.v));
+  $("ebody").querySelectorAll(".aopt").forEach(b=>b.onclick=()=>b.dataset.v==="edit"?openEditStore():b.dataset.v==="files"?openFiles():renderAdmin(b.dataset.v));
 }
-function orderCard(o,mode){
-  const d=new Date(o.date),ds=isNaN(d)?"":d.toLocaleDateString();
-  const btns=mode==="sold"?`<button class="chip" data-r="${esc(o.ref)}">Mark returned</button><button class="chip" data-c="${esc(o.ref)}">Mark cancelled</button>${o.payStatus==="pending"?`<button class="chip" data-p="${esc(o.ref)}">Mark payment received</button>`:""}`:`<button class="chip" data-u="${esc(o.ref)}">Undo (back to sold)</button>`;
-  return `<div class="ord"><strong>${esc(o.ref)}</strong> · ${money(oAmt(o))} <small>${esc(ds)}${o.pay?" · "+(o.pay==="ONLINE"?"Online":o.pay==="UPI"?"UPI":"COD")+(o.payStatus?" · "+(o.payStatus==="paid"?"Paid":"Payment pending"):""):""}${o.utr?" · UTR "+esc(o.utr):""}${o.payId?" · "+esc(o.payId):""}</small><br>${esc(o.name||"")}, ${esc(o.mobile||"")}<br><small>${(o.lines||[]).map(esc).join("; ")}</small><div class="hbtns" style="margin-top:6px;flex-wrap:wrap">${btns}</div></div>`;
+function orderCard(o){
+  const d=new Date(o.date),ds=isNaN(d)?"":d.toLocaleString(),st=oSt(o);
+  const pay=o.pay?(o.pay==="ONLINE"?"Online":o.pay==="UPI"?"UPI":"COD")+(o.payStatus?" · "+(o.payStatus==="paid"?"Paid":"Payment pending"):""):"";
+  return `<div class="ord"><strong>${esc(o.ref)}</strong> · ${money(oAmt(o))} <small>${esc(ds)}${pay?" · "+pay:""}${o.utr?" · UTR "+esc(o.utr):""}${o.payId?" · "+esc(o.payId):""}</small><br>${esc(o.name||"")}, ${esc(o.mobile||"")}<br><small>${esc(o.address||"")}${o.city?", "+esc(o.city):""} ${esc(o.pin||"")}</small><br><small>${(o.lines||[]).map(x=>esc(x)).join("; ")}</small><div class="hbtns" style="margin-top:8px;flex-wrap:wrap"><label style="flex:1;min-width:150px">Order status<select data-st="${esc(o.ref)}">${Object.keys(ST).map(k=>`<option value="${k}"${k===st?" selected":""}>${ST[k]}</option>`).join("")}</select></label>${o.payStatus==="pending"?`<button class="chip" data-p="${esc(o.ref)}">Mark payment received</button>`:""}<button class="chip" data-delo="${esc(o.ref)}">Remove order</button></div></div>`;
+}
+function bindOrderActions(){
+  $("ebody").querySelectorAll("[data-st]").forEach(s=>s.onchange=()=>setStatus(s.dataset.st,s.value));
+  $("ebody").querySelectorAll("[data-p]").forEach(b=>b.onclick=()=>setPayStatus(b.dataset.p));
+  $("ebody").querySelectorAll("[data-delo]").forEach(b=>b.onclick=()=>{const r=b.dataset.delo;if(!confirm("Remove order "+r+" permanently? This cannot be undone."))return;setOrders(getOrders().filter(x=>x.ref!==r));renderAdmin(aview)});
+}
+let ofilter="all";
+function renderSaved(){
+  $("etitle").textContent="Saved orders";
+  const all=getOrders(),keys=["all",...Object.keys(ST)];
+  const cnt=k=>k==="all"?all.length:all.filter(x=>oSt(x)===k).length;
+  const l=ofilter==="all"?all:all.filter(x=>oSt(x)===ofilter);
+  $("ebody").innerHTML=`${aBack}<div class="filters" style="padding:0" role="group" aria-label="Filter orders">${keys.map(k=>`<button class="chip" type="button" data-f="${k}" aria-pressed="${k===ofilter}">${k==="all"?"All":ST[k]} (${cnt(k)})</button>`).join("")}</div>${l.length?l.map(x=>orderCard(x)).join(""):'<p class="empty">No orders here yet.</p>'}`;
+  bindBack();
+  $("ebody").querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{ofilter=b.dataset.f;renderSaved()});
+  bindOrderActions();
 }
 function renderDash(){
   $("etitle").textContent="Dashboard";
-  const o=getOrders(),sold=o.filter(x=>oSt(x)==="sold"),ret=o.filter(x=>oSt(x)==="returned"),can=o.filter(x=>oSt(x)==="cancelled");
+  const o=getOrders(),by=k=>o.filter(x=>oSt(x)===k),pen=by("pending"),del=by("delivered"),ret=by("returned"),can=by("cancelled");
   const stat=(l,v,n)=>`<div class="stat"><small>${l}</small><strong>${v}</strong><small>${n}</small></div>`;
-  $("ebody").innerHTML=`${aBack}<div class="stats">${stat("Net sales",money(sumA(sold)),sold.length+" orders")}${stat("Net return",money(sumA(ret)),ret.length+" orders")}${stat("Net cancel",money(sumA(can)),can.length+" orders")}${stat("All orders",money(sumA(o)),o.length+" orders")}${stat("Products",PRODUCTS.length,"in store")}${stat("Cart items",cart.reduce((s,l)=>s+l.q,0),"on this device")}</div><h3>Recent orders</h3>${o.length?o.slice(0,5).map(x=>`<div class="ord"><strong>${esc(x.ref)}</strong> · ${money(oAmt(x))} · <small>${ST[oSt(x)]}</small><br>${esc(x.name||"")}</div>`).join(""):'<p class="empty">No orders yet.</p>'}`;
+  $("ebody").innerHTML=`${aBack}<div class="stats">${stat("Pending",money(sumA(pen)),pen.length+" orders")}${stat("Net sales (delivered)",money(sumA(del)),del.length+" orders")}${stat("Net return",money(sumA(ret)),ret.length+" orders")}${stat("Net cancel",money(sumA(can)),can.length+" orders")}${stat("All orders",money(sumA(o)),o.length+" orders")}${stat("Products",PRODUCTS.length,"in store")}</div><h3>Recent orders</h3>${o.length?o.slice(0,5).map(x=>`<div class="ord"><strong>${esc(x.ref)}</strong> · ${money(oAmt(x))} · <small>${ST[oSt(x)]}</small><br>${esc(x.name||"")}</div>`).join(""):'<p class="empty">No orders yet.</p>'}`;
   bindBack();
 }
 function renderOrders(kind){
-  const T={sold:"Net sales",returned:"Net return",cancelled:"Net cancel"};
+  const T={sold:"Net sales",returned:"Net return",cancelled:"Net cancel"},key=kind==="sold"?"delivered":kind;
   $("etitle").textContent=T[kind];
-  const l=getOrders().filter(x=>oSt(x)===kind);
-  $("ebody").innerHTML=`${aBack}<div class="stat"><small>${T[kind]}</small><strong>${money(sumA(l))}</strong><small>${l.length} orders</small></div>${l.length?l.map(x=>orderCard(x,kind)).join(""):'<p class="empty">No orders here yet.</p>'}`;
-  bindBack();
-  $("ebody").querySelectorAll("[data-r]").forEach(b=>b.onclick=()=>setStatus(b.dataset.r,"returned"));
-  $("ebody").querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>setStatus(b.dataset.c,"cancelled"));
-  $("ebody").querySelectorAll("[data-p]").forEach(b=>b.onclick=()=>setPayStatus(b.dataset.p));
-  $("ebody").querySelectorAll("[data-u]").forEach(b=>b.onclick=()=>setStatus(b.dataset.u,"sold"));
+  const l=getOrders().filter(x=>oSt(x)===key);
+  $("ebody").innerHTML=`${aBack}<div class="stat"><small>${T[kind]}</small><strong>${money(sumA(l))}</strong><small>${l.length} orders</small></div>${l.length?l.map(x=>orderCard(x)).join(""):'<p class="empty">No orders here yet.</p>'}`;
+  bindBack();bindOrderActions();
 }
 function openEditStore(){
   if(unlocked){$("etitle").textContent="Edit store";renderEditor()}
@@ -451,6 +815,35 @@ function openEditStore(){
 $("admin").onclick=()=>{if(adminOk){renderAdminHome();showEditor()}else renderLock("Admin","Enter admin password",PW_ADMIN,()=>{adminOk=true;renderAdminHome()},false)};
 $("eclose").onclick=closeCart;
 applySettings();renderFilters();renderGrid();renderCart();
+</script>
+<script>
+/* Backend files viewer: worker.js, wrangler.toml, README.md are embedded in this page */
+(function(){
+  const KEYS=["worker","wrangler","readme"];let cur="worker";
+  const g=id=>document.getElementById(id);
+  const src=k=>{const e=g("src-"+k);return{name:e.dataset.name,text:e.textContent.replace(/<\\\/script/g,"</script")}};
+  function show(k){
+    cur=k;const f=src(k);
+    g("fname").textContent=f.name;g("fpre").textContent=f.text;g("fpre").classList.toggle("wrap",k==="readme");g("fpre").scrollTop=0;
+    g("ftabs").querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.k===k));
+    g("fcopy").textContent="Copy";
+  }
+  window.openFiles=function(){
+    g("ftabs").innerHTML=KEYS.map(k=>`<button class="chip" type="button" data-k="${k}" aria-pressed="false">${src(k).name}</button>`).join("");
+    g("ftabs").querySelectorAll("button").forEach(b=>b.onclick=()=>show(b.dataset.k));
+    g("files").hidden=false;show(cur);g("fclose").focus();
+  };
+  const close=()=>{g("files").hidden=true};
+  g("fclose").onclick=close;
+  g("files").addEventListener("click",e=>{if(e.target===g("files"))close()});
+  document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!g("files").hidden){e.stopPropagation();close()}},true);
+  g("fcopy").onclick=async()=>{
+    const t=src(cur).text;
+    try{await navigator.clipboard.writeText(t)}catch(e){const r=document.createRange();r.selectNodeContents(g("fpre"));const s=getSelection();s.removeAllRanges();s.addRange(r);try{document.execCommand("copy")}catch(x){}s.removeAllRanges()}
+    g("fcopy").textContent="Copied ✓";
+  };
+  g("fdl").onclick=()=>{const f=src(cur),a=document.createElement("a");a.href=URL.createObjectURL(new Blob([f.text],{type:"text/plain"}));a.download=f.name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
+})();
 </script>
 </body>
 </html>
