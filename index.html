@@ -342,8 +342,8 @@ main = "worker.js"
 compatibility_date = "2024-11-01"
 
 [vars]
-# Your GitHub Pages ORIGIN (no path, no trailing slash). Multiple: comma separated.
-ALLOWED_ORIGIN = "https://YOUR-GITHUB-USERNAME.github.io"
+# Your Dask Everyday Clothing Pages ORIGIN (no path, no trailing slash). Multiple: comma separated.
+ALLOWED_ORIGIN = "https://YOUR-Dask Everyday Clothing-USERNAME.Dask Everyday Clothing.io"
 # Razorpay Key ID is public (rzp_test_... / rzp_live_...). The SECRET goes via `wrangler secret put`.
 RAZORPAY_KEY_ID = "rzp_test_XXXXXXXXXXXX"
 
@@ -383,7 +383,7 @@ wrangler login
 cd backend
 wrangler kv namespace create ORDERS      # output me id milegi -> wrangler.toml me paste karo
 ```
-`wrangler.toml` me badlo: `ALLOWED_ORIGIN` (apna `https://USERNAME.github.io`), `RAZORPAY_KEY_ID`, aur KV `id`.
+`wrangler.toml` me badlo: `ALLOWED_ORIGIN` (apna `https://USERNAME.Dask Everyday Clothing.io`), `RAZORPAY_KEY_ID`, aur KV `id`.
 
 Secrets set karo (ye sirf server par rehte hain):
 ```bash
@@ -402,10 +402,10 @@ Razorpay Dashboard → Settings → Webhooks → Add:
 - Secret: wahi jo `RAZORPAY_WEBHOOK_SECRET` me daala
 - Events: `payment.captured`, `order.paid`, `payment.failed`
 
-### 4) Frontend (GitHub Pages)
+### 4) Frontend (Dask Everyday Clothing Pages)
 1. `index.html` me ye line dhundo aur apna Worker URL daalo:
    `const API_BASE="https://dask-pay.YOUR-SUBDOMAIN.workers.dev";`
-2. GitHub repo me `index.html` upload karo → Settings → Pages → Branch `main` / root → Save.
+2. Dask Everyday Clothing repo me `index.html` upload karo → Settings → Pages → Branch `main` / root → Save.
 3. (Existing website me merge karna ho to: `/* ===== Online payment ... */` wala block, `startOnline(d)` ki line checkout handler me, aur "Pay online" radio copy karo.)
 
 ### 5) Test (Test Mode)
@@ -444,8 +444,8 @@ const DEFAULT_PRODUCTS=[
 const SIZES=["XS","S","M","L","XL"];
 const DEF={brand:"Dask Everyday Clothing",headline:"Clothes you'll wear on repeat.",sub:"Soft basics in five colors, sized XS to XL. Free returns within 30 days.",accent:"#f2b632",logo:"",cur:"$",wa:"",upi:"",upiNo:"",qr:"",qrData:"",bg:"",bgo:55,phone:"8651260835",email:"sumitdas6483@gmail.com",font:"Bricolage Grotesque",fs:16,hs:100,tc:"",hc:"",sf:"",sz:0,sc:"",cf:"",cz:0,cc:""};
 let S={...DEF},PRODUCTS=JSON.parse(JSON.stringify(DEFAULT_PRODUCTS));
-const LG=k=>{try{return localStorage.getItem("dask-"+k)??localStorage.getItem("hemline-"+k)}catch(e){return null}};
-try{const d=JSON.parse(LG("store")||"null");if(d){S={...DEF,...d.S};if(!S.brand||/^hemline$/i.test(S.brand.trim()))S.brand=DEF.brand;if(Array.isArray(d.P))PRODUCTS=d.P}}catch(e){}
+const LG=k=>{try{return localStorage.getItem("dask-"+k)??localStorage.getItem("Dask Everyday Clothing-"+k)}catch(e){return null}};
+try{const d=JSON.parse(LG("store")||"null");if(d){S={...DEF,...d.S};if(!S.brand||/^Dask Everyday Clothing$/i.test(S.brand.trim()))S.brand=DEF.brand;if(Array.isArray(d.P))PRODUCTS=d.P}}catch(e){}
 let dirty=false;
 function saveStore(){try{const j=JSON.stringify({S,P:PRODUCTS});localStorage.setItem("dask-store",j);return localStorage.getItem("dask-store")===j}catch(e){return false}}
 const MIN_PH=3,MAX_PH=10;
